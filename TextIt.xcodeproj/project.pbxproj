@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F97A4B4A2BCEDE3D00AC738D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */; };
 		F98647422BBC7C1500864FC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98647412BBC7C1500864FC8 /* AppDelegate.swift */; };
 		F98647442BBC7C1500864FC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98647432BBC7C1500864FC8 /* SceneDelegate.swift */; };
 		F98647462BBC7C1500864FC8 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98647452BBC7C1500864FC8 /* ConversationsViewController.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		F986473E2BBC7C1500864FC8 /* TextIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F98647412BBC7C1500864FC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F98647432BBC7C1500864FC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +51,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F97A4B482BCEDE2D00AC738D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		F98647352BBC7C1500864FC8 = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +78,7 @@
 		F98647402BBC7C1500864FC8 /* TextIt */ = {
 			isa = PBXGroup;
 			children = (
+				F97A4B482BCEDE2D00AC738D /* Extensions */,
 				F9A7A8602BBC7FB400844FE6 /* Resources */,
 				F9A7A85F2BBC7FA800844FE6 /* Models */,
 				F9A7A85E2BBC7F9D00844FE6 /* Controllers */,
@@ -198,6 +209,7 @@
 			files = (
 				F9A7A8662BBC84D100844FE6 /* NewConversationViewController.swift in Sources */,
 				F9A7A8622BBC84B500844FE6 /* LoginViewController.swift in Sources */,
+				F97A4B4A2BCEDE3D00AC738D /* UIView+Extensions.swift in Sources */,
 				F9A7A8642BBC84C200844FE6 /* RegisterViewController.swift in Sources */,
 				F9A7A8682BBC84E700844FE6 /* PhotoViewerViewController.swift in Sources */,
 				F9A7A86C2BBC850200844FE6 /* ProfilePageViewController.swift in Sources */,
