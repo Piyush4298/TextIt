@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		970F5B7D241B92520390B5CA /* Pods_TextIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */; };
 		F97A4B4A2BCEDE3D00AC738D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */; };
 		F98647422BBC7C1500864FC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98647412BBC7C1500864FC8 /* AppDelegate.swift */; };
 		F98647442BBC7C1500864FC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98647432BBC7C1500864FC8 /* SceneDelegate.swift */; };
@@ -23,6 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0062E91C0BA29C23DC284CB6 /* Pods-TextIt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextIt.release.xcconfig"; path = "Target Support Files/Pods-TextIt/Pods-TextIt.release.xcconfig"; sourceTree = "<group>"; };
+		239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TextIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8F6F013EFC7021E4AED7CDD /* Pods-TextIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextIt.debug.xcconfig"; path = "Target Support Files/Pods-TextIt/Pods-TextIt.debug.xcconfig"; sourceTree = "<group>"; };
 		F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		F986473E2BBC7C1500864FC8 /* TextIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F98647412BBC7C1500864FC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -45,12 +49,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				970F5B7D241B92520390B5CA /* Pods_TextIt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		949F3371B73C2B6B3D72E18F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D8F6F013EFC7021E4AED7CDD /* Pods-TextIt.debug.xcconfig */,
+				0062E91C0BA29C23DC284CB6 /* Pods-TextIt.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		F97A4B482BCEDE2D00AC738D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +79,8 @@
 			children = (
 				F98647402BBC7C1500864FC8 /* TextIt */,
 				F986473F2BBC7C1500864FC8 /* Products */,
+				949F3371B73C2B6B3D72E18F /* Pods */,
+				FA52F6C81E522BAC6A883BBA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -136,6 +153,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		FA52F6C81E522BAC6A883BBA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,9 +168,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F98647522BBC7C1600864FC8 /* Build configuration list for PBXNativeTarget "TextIt" */;
 			buildPhases = (
+				D8D0239E4B1204EDF88464F6 /* [CP] Check Pods Manifest.lock */,
 				F986473A2BBC7C1500864FC8 /* Sources */,
 				F986473B2BBC7C1500864FC8 /* Frameworks */,
 				F986473C2BBC7C1500864FC8 /* Resources */,
+				2B286AA4543451CF09553DBE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -201,6 +228,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2B286AA4543451CF09553DBE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TextIt/Pods-TextIt-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TextIt/Pods-TextIt-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TextIt/Pods-TextIt-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8D0239E4B1204EDF88464F6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TextIt-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F986473A2BBC7C1500864FC8 /* Sources */ = {
@@ -363,6 +432,7 @@
 		};
 		F98647532BBC7C1600864FC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8F6F013EFC7021E4AED7CDD /* Pods-TextIt.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -395,6 +465,7 @@
 		};
 		F98647542BBC7C1600864FC8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0062E91C0BA29C23DC284CB6 /* Pods-TextIt.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
