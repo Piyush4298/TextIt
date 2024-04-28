@@ -5,6 +5,7 @@
 //  Created by Piyush Pandey on 02/04/24.
 //
 
+import FirebaseAuth
 import UIKit
 
 class RegisterViewController: UIViewController {
@@ -178,6 +179,14 @@ class RegisterViewController: UIViewController {
         }
         
         // MARK: Firebase Registration
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { authResult, error in
+            guard let result = authResult, error == nil else {
+                print("Error Creating a user!")
+                return
+            }
+            let user = result.user
+            print("Created account for user: \(user.email ?? "none")")
+        })
     }
     
 //    @objc private func didTapLogin() {

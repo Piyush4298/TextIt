@@ -5,6 +5,7 @@
 //  Created by Piyush Pandey on 02/04/24.
 //
 
+import FirebaseAuth
 import UIKit
 
 class LoginViewController: UIViewController {
@@ -117,6 +118,14 @@ class LoginViewController: UIViewController {
             return
         }
         // MARK: Firebase Login
+        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { authResult, error in
+            guard let result = authResult, error == nil else {
+                print("Error logging in with given credentials!", error)
+                return
+            }
+            let user = result.user
+            print("Logged in user: \(user.email ?? "none")")
+        })
     }
     
     @objc private func didTapRegister() {

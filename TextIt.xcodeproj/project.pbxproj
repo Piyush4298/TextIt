@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		970F5B7D241B92520390B5CA /* Pods_TextIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */; };
+		F91BB52D2BDE95D4008043E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */; };
 		F97A4B4A2BCEDE3D00AC738D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */; };
 		F98647422BBC7C1500864FC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98647412BBC7C1500864FC8 /* AppDelegate.swift */; };
 		F98647442BBC7C1500864FC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98647432BBC7C1500864FC8 /* SceneDelegate.swift */; };
@@ -27,6 +28,7 @@
 		0062E91C0BA29C23DC284CB6 /* Pods-TextIt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextIt.release.xcconfig"; path = "Target Support Files/Pods-TextIt/Pods-TextIt.release.xcconfig"; sourceTree = "<group>"; };
 		239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TextIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8F6F013EFC7021E4AED7CDD /* Pods-TextIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextIt.debug.xcconfig"; path = "Target Support Files/Pods-TextIt/Pods-TextIt.debug.xcconfig"; sourceTree = "<group>"; };
+		F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		F986473E2BBC7C1500864FC8 /* TextIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F98647412BBC7C1500864FC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -62,7 +64,6 @@
 				D8F6F013EFC7021E4AED7CDD /* Pods-TextIt.debug.xcconfig */,
 				0062E91C0BA29C23DC284CB6 /* Pods-TextIt.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -95,6 +96,7 @@
 		F98647402BBC7C1500864FC8 /* TextIt */ = {
 			isa = PBXGroup;
 			children = (
+				F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */,
 				F97A4B482BCEDE2D00AC738D /* Extensions */,
 				F9A7A8602BBC7FB400844FE6 /* Resources */,
 				F9A7A85F2BBC7FA800844FE6 /* Models */,
@@ -222,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F986474B2BBC7C1600864FC8 /* Assets.xcassets in Resources */,
+				F91BB52D2BDE95D4008043E6 /* GoogleService-Info.plist in Resources */,
 				F986474E2BBC7C1600864FC8 /* Base in Resources */,
 				F98647492BBC7C1500864FC8 /* Base in Resources */,
 			);
@@ -439,6 +442,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5S4264CXAJ;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TextIt/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -472,6 +476,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5S4264CXAJ;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TextIt/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
