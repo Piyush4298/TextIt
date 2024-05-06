@@ -19,13 +19,11 @@ class RegisterViewController: UIViewController {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person")
+        imageView.image = UIImage(systemName: "person.circle")
         imageView.tintColor = .gray
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.lightGray.cgColor
         return imageView
     }()
     
@@ -174,18 +172,28 @@ class RegisterViewController: UIViewController {
               !email.isEmpty,
               !password.isEmpty,
               password.count >= 6 else {
-            alertUserWithRegisterError()
+            self.showSnackBar(message: "Please enter all the information to register!")
             return
         }
         
-        // MARK: Firebase Registration
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { authResult, error in
-            guard let result = authResult, error == nil else {
-                print("Error Creating a user!")
+        DatabaseManager.shared.userExists(with: email, completion: { [weak self] exists in
+            guard !exists else {
+                self?.showSnackBar(message: "User already exists. Please login!")
                 return
             }
-            let user = result.user
-            print("Created account for user: \(user.email ?? "none")")
+
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { [weak self] authResult, error in
+                guard let self else { return }
+                guard authResult != nil, error == nil else {
+                    self.showSnackBar(message: "Error registering a new user, please try again!")
+                    return
+                }
+                
+                DatabaseManager.shared.insertUser(with: TextItUser(firstName: firstName,
+                                                                   lastName: lastName,
+                                                                   emailAddress: email))
+                self.dismiss(animated: true)
+            })
         })
     }
     
@@ -197,14 +205,6 @@ class RegisterViewController: UIViewController {
     @objc private func didTapChangeProfileImage() {
         self.presentPhotoActionSheet()
         print("change profile")
-    }
-    
-    private func alertUserWithRegisterError() {
-        let alert  = UIAlertController(title: "Woops",
-                                       message: "Please enter all information to create a new account.",
-                                       preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
-        present(alert, animated: true)
     }
 
     private func dismissKeyboard() {
@@ -272,6 +272,8 @@ extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationC
         picker.dismiss(animated: true)
         guard let selectedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else { return }
         self.imageView.image = selectedImage
+        self.imageView.layer.borderWidth = 2
+        self.imageView.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

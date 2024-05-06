@@ -114,31 +114,25 @@ class LoginViewController: UIViewController {
         dismissKeyboard()
         guard let email = emailTextField.text, let password = passwordTextField.text,
               !email.isEmpty, !password.isEmpty, password.count >= 6 else {
-            alertUserWithLoginError()
+            self.showSnackBar(message: "Please enter valid credentials to login")
             return
         }
         // MARK: Firebase Login
-        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { authResult, error in
+        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { [weak self] authResult, error in
+            guard let self else { return }
             guard let result = authResult, error == nil else {
-                print("Error logging in with given credentials!", error)
+                self.showSnackBar(message: "Error logging in, please try again")
                 return
             }
             let user = result.user
             print("Logged in user: \(user.email ?? "none")")
+            self.dismiss(animated: true)
         })
     }
     
     @objc private func didTapRegister() {
         let registerVC = RegisterViewController()
         navigationController?.pushViewController(registerVC, animated: true)
-    }
-    
-    private func alertUserWithLoginError() {
-        let alert  = UIAlertController(title: "Woops",
-                                       message: "Please enter valid credentials to login",
-                                       preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
-        present(alert, animated: true)
     }
     
     private func dismissKeyboard() {
