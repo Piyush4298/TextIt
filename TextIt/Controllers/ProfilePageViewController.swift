@@ -5,6 +5,7 @@
 //  Created by Piyush Pandey on 02/04/24.
 //
 
+import FBSDKLoginKit
 import FirebaseAuth
 import UIKit
 
@@ -48,6 +49,7 @@ extension ProfilePageViewController: UITableViewDelegate, UITableViewDataSource 
                                             style: .default,
                                             handler: { [weak self] _ in
             guard let self else { return }
+            FBSDKLoginKit.LoginManager().logOut()
             do {
                 try FirebaseAuth.Auth.auth().signOut()
                 

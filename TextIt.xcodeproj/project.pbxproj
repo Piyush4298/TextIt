@@ -32,6 +32,7 @@
 		239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TextIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8F6F013EFC7021E4AED7CDD /* Pods-TextIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextIt.debug.xcconfig"; path = "Target Support Files/Pods-TextIt/Pods-TextIt.debug.xcconfig"; sourceTree = "<group>"; };
 		F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F945B7752BEA7CDC00EF1F11 /* TextIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TextIt.entitlements; sourceTree = "<group>"; };
 		F9534A2B2BE783DF00FA9DB7 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		F986473E2BBC7C1500864FC8 /* TextIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +104,7 @@
 		F98647402BBC7C1500864FC8 /* TextIt */ = {
 			isa = PBXGroup;
 			children = (
+				F945B7752BEA7CDC00EF1F11 /* TextIt.entitlements */,
 				F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */,
 				F97A4B482BCEDE2D00AC738D /* Extensions */,
 				F9A7A8602BBC7FB400844FE6 /* Resources */,
@@ -459,6 +461,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TextIt/TextIt.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5S4264CXAJ;
@@ -493,6 +496,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TextIt/TextIt.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5S4264CXAJ;

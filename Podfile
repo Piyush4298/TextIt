@@ -5,8 +5,14 @@ target 'TextIt' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
   
+  #Firebase Login
   pod 'FirebaseCore'
   pod 'FirebaseAuth'
   pod 'FirebaseDatabase'
+  
+  # Facebook Login
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
 
 end
