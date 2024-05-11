@@ -14,5 +14,8 @@ target 'TextIt' do
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
+  
+  # Google sign in
+  pod 'GoogleSignIn'
 
 end

@@ -6,25 +6,27 @@
 //
 
 import FBSDKLoginKit
+import FirebaseCore
 import FirebaseAuth
+import GoogleSignIn
 import UIKit
 
 class LoginViewController: UIViewController {
     
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
         return scrollView
     }()
     
-    private let imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "ic_messenger_logo")
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
-    private let emailTextField: UITextField = {
+    private lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.autocapitalizationType = .none
         textField.autocorrectionType = .no
@@ -39,7 +41,7 @@ class LoginViewController: UIViewController {
         return textField
     }()
     
-    private let passwordTextField: UITextField = {
+    private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         textField.autocapitalizationType = .none
         textField.autocorrectionType = .no
@@ -55,7 +57,7 @@ class LoginViewController: UIViewController {
         return textField
     }()
     
-    private let loginButton: UIButton = {
+    private lazy var loginButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemGreen
         button.setTitle("Log In", for: .normal)
@@ -75,6 +77,13 @@ class LoginViewController: UIViewController {
         fbloginButton.permissions = ["email", "public_profile"]
         return fbloginButton
     }()
+    
+    private lazy var googleSignInButton: GIDSignInButton = {
+        let signInButton = GIDSignInButton()
+        signInButton.colorScheme = .dark
+        signInButton.style = .wide
+        return signInButton
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,6 +97,7 @@ class LoginViewController: UIViewController {
                                                             action: #selector(didTapRegister))
         // Do any additional setup after loading the view.
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        googleSignInButton.addTarget(self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
@@ -99,7 +109,7 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(passwordTextField)
         scrollView.addSubview(loginButton)
         scrollView.addSubview(fbLoginButton)
-        
+        scrollView.addSubview(googleSignInButton)
     }
     
     override func viewDidLayoutSubviews() {
@@ -127,6 +137,11 @@ class LoginViewController: UIViewController {
                                      y: loginButton.bottom + 20,
                                      width: scrollView.width - 60,
                                      height: 44)
+        
+        googleSignInButton.frame = CGRect(x: 30,
+                                          y: fbLoginButton.bottom + 20,
+                                          width: scrollView.width - 60,
+                                          height: 44)
     }
     
     @objc private func loginButtonTapped() {
@@ -152,6 +167,54 @@ class LoginViewController: UIViewController {
     @objc private func didTapRegister() {
         let registerVC = RegisterViewController()
         navigationController?.pushViewController(registerVC, animated: true)
+    }
+    
+    @objc private func googleSignInButtonTapped() {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        // Start the sign-in flow
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] result, error in
+            guard let self else { return }
+            if let error = error {
+                print("Error signing in with google, \(error)")
+                return
+            }
+            
+            guard let user = result?.user,
+                  let firstName = user.profile?.givenName,
+                  let lastName = user.profile?.familyName,
+                  let email = user.profile?.email,
+                  let idToken = user.idToken?.tokenString
+            else {
+                print("Can't fetch user id or token")
+                return
+            }
+            
+            DatabaseManager.shared.userExists(with: email, completion: { exists in
+                if !exists {
+                    DatabaseManager.shared.insertUser(with: TextItUser(firstName: firstName,
+                                                                       lastName: lastName,
+                                                                       emailAddress: email))
+                }
+            })
+            
+            let credentials = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: user.accessToken.tokenString)
+            
+            FirebaseAuth.Auth.auth().signIn(with: credentials, completion: { [weak self] authResult, error in
+                guard let self else { return }
+                guard let result = authResult, error == nil else {
+                    self.showSnackBar(message: "Google credential login failed!")
+                    return
+                }
+                self.dismiss(animated: true)
+            })
+            
+        }
     }
     
     private func dismissKeyboard() {
