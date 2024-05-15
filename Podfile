@@ -9,6 +9,7 @@ target 'TextIt' do
   pod 'FirebaseCore'
   pod 'FirebaseAuth'
   pod 'FirebaseDatabase'
+  pod 'FirebaseStorage'
   
   # Facebook Login
   pod 'FBSDKCoreKit'
@@ -17,5 +18,10 @@ target 'TextIt' do
   
   # Google sign in
   pod 'GoogleSignIn'
-
+  
+  pod 'MessageKit'
+  pod 'JGProgressHUD'
+  pod 'RealmSwift'
+  pod 'SDWebImage'
+  
 end

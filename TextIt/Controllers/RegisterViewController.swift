@@ -6,10 +6,13 @@
 //
 
 import FirebaseAuth
+import JGProgressHUD
 import UIKit
 
 class RegisterViewController: UIViewController {
-
+    
+    private let spinner = JGProgressHUD(style: .dark)
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
@@ -105,11 +108,6 @@ class RegisterViewController: UIViewController {
         title = "Register"
         view.backgroundColor = .white
         
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log In",
-//                                                            style: .done,
-//                                                            target: self,
-//                                                            action: #selector(didTapLogin))
-        // Do any additional setup after loading the view.
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         
         firstNameTextField.delegate = self
@@ -175,20 +173,23 @@ class RegisterViewController: UIViewController {
             self.showSnackBar(message: "Please enter all the information to register!")
             return
         }
+        self.spinner.show(in: self.view)
         
         DatabaseManager.shared.userExists(with: email, completion: { [weak self] exists in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.spinner.dismiss()
+            }
             guard !exists else {
-                self?.showSnackBar(message: "User already exists. Please login!")
+                self.showSnackBar(message: "User already exists. Please login!")
                 return
             }
-
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { [weak self] authResult, error in
                 guard let self else { return }
                 guard authResult != nil, error == nil else {
                     self.showSnackBar(message: "Error registering a new user, please try again!")
                     return
                 }
-                
                 DatabaseManager.shared.insertUser(with: TextItUser(firstName: firstName,
                                                                    lastName: lastName,
                                                                    emailAddress: email))
@@ -196,11 +197,6 @@ class RegisterViewController: UIViewController {
             })
         })
     }
-    
-//    @objc private func didTapLogin() {
-//        let loginVC = LoginViewController()
-//        navigationController?.pushViewController(loginVC, animated: true)
-//    }
     
     @objc private func didTapChangeProfileImage() {
         self.presentPhotoActionSheet()

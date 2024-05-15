@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		970F5B7D241B92520390B5CA /* Pods_TextIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */; };
+		F91AB7252BF54486003059E3 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91AB7242BF54486003059E3 /* StorageManager.swift */; };
 		F91BB52D2BDE95D4008043E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */; };
 		F9534A2C2BE783DF00FA9DB7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9534A2B2BE783DF00FA9DB7 /* DatabaseManager.swift */; };
 		F97A4B4A2BCEDE3D00AC738D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */; };
@@ -23,6 +24,7 @@
 		F9A7A8682BBC84E700844FE6 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A8672BBC84E700844FE6 /* PhotoViewerViewController.swift */; };
 		F9A7A86A2BBC84F600844FE6 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A8692BBC84F600844FE6 /* VideoPlayerViewController.swift */; };
 		F9A7A86C2BBC850200844FE6 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A86B2BBC850200844FE6 /* ProfilePageViewController.swift */; };
+		F9FB88C82BF29DA200A11D3D /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FB88C72BF29DA200A11D3D /* ChatViewController.swift */; };
 		F9FDECF12BE92CDE00823192 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FDECF02BE92CDE00823192 /* UIViewController+Extensions.swift */; };
 		F9FDECF42BE934AF00823192 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FDECF32BE934AF00823192 /* PaddingLabel.swift */; };
 /* End PBXBuildFile section */
@@ -31,6 +33,7 @@
 		0062E91C0BA29C23DC284CB6 /* Pods-TextIt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextIt.release.xcconfig"; path = "Target Support Files/Pods-TextIt/Pods-TextIt.release.xcconfig"; sourceTree = "<group>"; };
 		239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TextIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8F6F013EFC7021E4AED7CDD /* Pods-TextIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextIt.debug.xcconfig"; path = "Target Support Files/Pods-TextIt/Pods-TextIt.debug.xcconfig"; sourceTree = "<group>"; };
+		F91AB7242BF54486003059E3 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F945B7752BEA7CDC00EF1F11 /* TextIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TextIt.entitlements; sourceTree = "<group>"; };
 		F9534A2B2BE783DF00FA9DB7 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -49,6 +52,7 @@
 		F9A7A8672BBC84E700844FE6 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		F9A7A8692BBC84F600844FE6 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		F9A7A86B2BBC850200844FE6 /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
+		F9FB88C72BF29DA200A11D3D /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		F9FDECF02BE92CDE00823192 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		F9FDECF32BE934AF00823192 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,6 +148,7 @@
 				F9A7A8672BBC84E700844FE6 /* PhotoViewerViewController.swift */,
 				F9A7A8692BBC84F600844FE6 /* VideoPlayerViewController.swift */,
 				F9A7A86B2BBC850200844FE6 /* ProfilePageViewController.swift */,
+				F9FB88C72BF29DA200A11D3D /* ChatViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -162,6 +167,7 @@
 				F98647412BBC7C1500864FC8 /* AppDelegate.swift */,
 				F98647432BBC7C1500864FC8 /* SceneDelegate.swift */,
 				F9534A2B2BE783DF00FA9DB7 /* DatabaseManager.swift */,
+				F91AB7242BF54486003059E3 /* StorageManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -308,7 +314,9 @@
 				F9A7A86C2BBC850200844FE6 /* ProfilePageViewController.swift in Sources */,
 				F98647462BBC7C1500864FC8 /* ConversationsViewController.swift in Sources */,
 				F9A7A86A2BBC84F600844FE6 /* VideoPlayerViewController.swift in Sources */,
+				F9FB88C82BF29DA200A11D3D /* ChatViewController.swift in Sources */,
 				F9FDECF42BE934AF00823192 /* PaddingLabel.swift in Sources */,
+				F91AB7252BF54486003059E3 /* StorageManager.swift in Sources */,
 				F98647422BBC7C1500864FC8 /* AppDelegate.swift in Sources */,
 				F98647442BBC7C1500864FC8 /* SceneDelegate.swift in Sources */,
 			);

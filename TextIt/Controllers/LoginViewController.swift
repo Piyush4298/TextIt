@@ -9,9 +9,12 @@ import FBSDKLoginKit
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
+import JGProgressHUD
 import UIKit
 
 class LoginViewController: UIViewController {
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -21,7 +24,7 @@ class LoginViewController: UIViewController {
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "ic_messenger_logo")
+        imageView.image = UIImage(named: "ic_textIt_logo")
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -178,9 +181,13 @@ class LoginViewController: UIViewController {
             self.showSnackBar(message: "Please enter valid credentials to login")
             return
         }
+        spinner.show(in: self.view)
         // MARK: Firebase Login
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { [weak self] authResult, error in
             guard let self else { return }
+            DispatchQueue.main.async {
+                self.spinner.dismiss()
+            }
             guard let result = authResult, error == nil else {
                 self.showSnackBar(message: "Error logging in, please try again")
                 return
@@ -201,7 +208,8 @@ class LoginViewController: UIViewController {
         loginManager.logIn(permissions: ["public_profile", "email"], from: self) { [weak self] result, error in
             guard let self else {return}
             guard let token = result?.token?.tokenString, error == nil else {
-                self.showSnackBar(message: "User failed to login using Facebook!")
+                print("User failed to login using Facebook!", error ?? "")
+                self.spinner.dismiss()
                 return
             }
             
@@ -210,10 +218,11 @@ class LoginViewController: UIViewController {
                                                     tokenString: token,
                                                     version: nil,
                                                     httpMethod: .get)
-            
+            self.spinner.show(in: self.view)
             facebookGraphRequest.start(completion: { _, result, error in
                 guard let result = result as? [String: Any], error == nil else {
-                    print("Failed to make facebook graph request", error!)
+                    print("Failed to make facebook graph request", error ?? "")
+                    self.spinner.dismiss()
                     return
                 }
                 
@@ -239,7 +248,10 @@ class LoginViewController: UIViewController {
                 
                 FirebaseAuth.Auth.auth().signIn(with: credentials, completion: { [weak self] authResult, error in
                     guard let self else { return }
-                    guard let result = authResult, error == nil else {
+                    DispatchQueue.main.async {
+                        self.spinner.dismiss()
+                    }
+                    guard authResult != nil, error == nil else {
                         self.showSnackBar(message: "Facebook credential login failed!")
                         return
                     }
@@ -255,12 +267,13 @@ class LoginViewController: UIViewController {
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
-        
+        self.spinner.show(in: self.view)
         // Start the sign-in flow
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] result, error in
             guard let self else { return }
             if let error = error {
                 print("Error signing in with google, \(error)")
+                self.spinner.dismiss()
                 return
             }
             
@@ -287,7 +300,10 @@ class LoginViewController: UIViewController {
             
             FirebaseAuth.Auth.auth().signIn(with: credentials, completion: { [weak self] authResult, error in
                 guard let self else { return }
-                guard let result = authResult, error == nil else {
+                DispatchQueue.main.async {
+                    self.spinner.dismiss()
+                }
+                guard authResult != nil, error == nil else {
                     self.showSnackBar(message: "Google credential login failed!")
                     return
                 }
