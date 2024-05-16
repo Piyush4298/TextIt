@@ -32,11 +32,18 @@ extension DatabaseManager {
     }
     
     /// Inserts a new user to the database.
-    public func insertUser(with user: TextItUser) {
+    public func insertUser(with user: TextItUser, completion: @escaping ((Bool) -> Void)) {
         database.child(user.safeEmail).setValue([
             "firstName": user.firstName,
             "lastName": user.lastName
-        ])
+        ], withCompletionBlock: { error, _ in
+            if let error = error {
+                completion(false)
+                print("Failed to insert in Database.\(error)")
+                return
+            }
+            completion(true)
+        })
     }
 }
 
@@ -50,5 +57,8 @@ struct TextItUser {
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
         return safeEmail
     }
-    //let profilePictureUrl: String
+    
+    var profilePictureFileName: String {
+        return "\(safeEmail)_profile_picture.png"
+    }
 }

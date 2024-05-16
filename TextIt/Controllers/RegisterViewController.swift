@@ -190,9 +190,27 @@ class RegisterViewController: UIViewController {
                     self.showSnackBar(message: "Error registering a new user, please try again!")
                     return
                 }
-                DatabaseManager.shared.insertUser(with: TextItUser(firstName: firstName,
-                                                                   lastName: lastName,
-                                                                   emailAddress: email))
+                let textItUser = TextItUser(firstName: firstName,
+                                            lastName: lastName,
+                                            emailAddress: email)
+                DatabaseManager.shared.insertUser(with: textItUser, completion: { isSaved in
+                    if isSaved {
+                        guard let image = self.imageView.image,
+                              let data = image.pngData() else {
+                            return
+                        }
+                        let fileName = textItUser.profilePictureFileName
+                        StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
+                            switch result {
+                            case .success(let downloadUrl):
+                                UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                                print("Success uploading pic: \(downloadUrl)")
+                            case .failure(let error):
+                                print("Error while uploading: \(error)")
+                            }
+                        })
+                    }
+                })
                 self.dismiss(animated: true)
             })
         })

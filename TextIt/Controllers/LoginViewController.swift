@@ -214,7 +214,7 @@ class LoginViewController: UIViewController {
             }
             
             let facebookGraphRequest = GraphRequest(graphPath: "me",
-                                                    parameters: ["fields": "email, name"],
+                                                    parameters: ["fields": "email, first_name, last_name, picture.type(large)"],
                                                     tokenString: token,
                                                     version: nil,
                                                     httpMethod: .get)
@@ -225,22 +225,49 @@ class LoginViewController: UIViewController {
                     self.spinner.dismiss()
                     return
                 }
-                
-                guard let userName = result["name"] as? String,
-                      let email = result["email"] as? String else {
+
+                guard let firstName = result["first_name"] as? String,
+                      let lastName = result["last_name"] as? String,
+                      let email = result["email"] as? String,
+                      let picture = result["picture"] as? [String: Any],
+                      let dataObj = picture["data"] as? [String: Any],
+                      let picUrl = dataObj["url"] as? String
+                else {
                     print("Failed to fetch name and email from facebook")
                     return
                 }
                 
-                let nameComponents = userName.components(separatedBy: " ")
-                let firstName = nameComponents[0]
-                let lastName = nameComponents[nameComponents.count - 1]
-                
                 DatabaseManager.shared.userExists(with: email, completion: { exists in
                     if !exists {
-                        DatabaseManager.shared.insertUser(with: TextItUser(firstName: firstName,
-                                                                           lastName: lastName,
-                                                                           emailAddress: email))
+                        let textItUser = TextItUser(firstName: firstName,
+                                                    lastName: lastName,
+                                                    emailAddress: email)
+                        DatabaseManager.shared.insertUser(with: textItUser, completion: { isSaved in
+                            if isSaved {
+                                // upload Image
+                                guard let url = URL(string: picUrl) else {
+                                    print("Failed to convert url")
+                                    return
+                                }
+                                URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
+                                    guard let data = data else {
+                                        print("No pic data")
+                                        return
+                                    }
+                                    
+                                    let fileName = textItUser.profilePictureFileName
+                                    StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
+                                        switch result {
+                                        case .success(let downloadUrl):
+                                            UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                                            print("Success uploading pic: \(downloadUrl)")
+                                        case .failure(let error):
+                                            print("Error while uploading: \(error)")
+                                        }
+                                    })
+                                }).resume()
+                            }
+                        })
                     }
                 })
                 
@@ -289,9 +316,35 @@ class LoginViewController: UIViewController {
             
             DatabaseManager.shared.userExists(with: email, completion: { exists in
                 if !exists {
-                    DatabaseManager.shared.insertUser(with: TextItUser(firstName: firstName,
-                                                                       lastName: lastName,
-                                                                       emailAddress: email))
+                    let textItUser = TextItUser(firstName: firstName,
+                                                lastName: lastName,
+                                                emailAddress: email)
+                    DatabaseManager.shared.insertUser(with: textItUser, completion: { isSaved in
+                        if isSaved {
+                            if let hasImage = user.profile?.hasImage, hasImage {
+                                guard let url = user.profile?.imageURL(withDimension: 200) else {
+                                    print("No profile pic present")
+                                    return
+                                }
+                                URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
+                                    guard let data = data else {
+                                        print("No pic data")
+                                        return
+                                    }
+                                    let fileName = textItUser.profilePictureFileName
+                                    StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
+                                        switch result {
+                                        case .success(let downloadUrl):
+                                            UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                                            print("Success uploading pic: \(downloadUrl)")
+                                        case .failure(let error):
+                                            print("Error while uploading: \(error)")
+                                        }
+                                    })
+                                }).resume()
+                            }
+                        }
+                    })
                 }
             })
             
