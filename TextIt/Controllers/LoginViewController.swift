@@ -193,6 +193,7 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
+            UserDefaults.standard.set(email, forKey: UserDefaultConstantKeys.email)
             print("Logged in user: \(user.email ?? "none")")
             self.dismiss(animated: true)
         })
@@ -237,6 +238,8 @@ class LoginViewController: UIViewController {
                     return
                 }
                 
+                UserDefaults.standard.set(email, forKey: UserDefaultConstantKeys.email)
+                
                 DatabaseManager.shared.userExists(with: email, completion: { exists in
                     if !exists {
                         let textItUser = TextItUser(firstName: firstName,
@@ -259,7 +262,8 @@ class LoginViewController: UIViewController {
                                     StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
                                         switch result {
                                         case .success(let downloadUrl):
-                                            UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                                            UserDefaults.standard.setValue(downloadUrl,
+                                                                           forKey: UserDefaultConstantKeys.profilePicUrl)
                                             print("Success uploading pic: \(downloadUrl)")
                                         case .failure(let error):
                                             print("Error while uploading: \(error)")
@@ -314,6 +318,8 @@ class LoginViewController: UIViewController {
                 return
             }
             
+            UserDefaults.standard.set(email, forKey: UserDefaultConstantKeys.email)
+            
             DatabaseManager.shared.userExists(with: email, completion: { exists in
                 if !exists {
                     let textItUser = TextItUser(firstName: firstName,
@@ -335,7 +341,8 @@ class LoginViewController: UIViewController {
                                     StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
                                         switch result {
                                         case .success(let downloadUrl):
-                                            UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                                            UserDefaults.standard.setValue(downloadUrl,
+                                                                           forKey: UserDefaultConstantKeys.profilePicUrl)
                                             print("Success uploading pic: \(downloadUrl)")
                                         case .failure(let error):
                                             print("Error while uploading: \(error)")

@@ -23,6 +23,57 @@ class ProfilePageViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableHeaderView = createTableHeader()
+    }
+    
+    private func createTableHeader() -> UIView? {
+        guard let email = UserDefaults.standard.value(forKey: UserDefaultConstantKeys.email) as? String else {
+            return nil
+        }
+        let safeEmail = DatabaseManager.safeEmail(email)
+        let imgPath = "images/" + safeEmail + Constants.profilePicExtension
+        let headerView = UIView(frame: CGRect(x: 0,
+                                        y: 0,
+                                        width: self.view.width,
+                                        height: 300))
+        headerView.backgroundColor = .link
+        let imageView = UIImageView(frame: CGRect(x: (headerView.width - 150) / 2,
+                                                  y: 75,
+                                                  width: 150,
+                                                  height: 150))
+        imageView.backgroundColor = .white
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 3
+        imageView.layer.cornerRadius = imageView.width / 2
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.masksToBounds = true
+        setImageFor(path: imgPath, in: imageView)
+        headerView.addSubview(imageView)
+        return headerView
+    }
+    
+    private func setImageFor(path: String, in imageView: UIImageView) {
+        StorageManager.shared.downloadURL(for: path, completion: { [weak self] result in
+            switch result {
+            case .success(let url):
+                self?.downloadAndSetImage(for: imageView, with: url)
+            case .failure(_):
+                self?.showSnackBar(message: "Could not find image for user")
+                print("Failed to get download URL")
+            }
+        })
+    }
+    
+    private func downloadAndSetImage(for imageView: UIImageView, with url: URL) {
+        URLSession.shared.dataTask(with: url, completionHandler: { data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            DispatchQueue.main.async {
+                let image = UIImage(data: data)
+                imageView.image = image
+            }
+        }).resume()
     }
 }
 

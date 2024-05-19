@@ -181,7 +181,7 @@ class RegisterViewController: UIViewController {
                 self.spinner.dismiss()
             }
             guard !exists else {
-                self.showSnackBar(message: "User already exists. Please login!")
+                self.showSnackBar(message: "This email is already in use. Please login!")
                 return
             }
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { [weak self] authResult, error in
@@ -190,6 +190,9 @@ class RegisterViewController: UIViewController {
                     self.showSnackBar(message: "Error registering a new user, please try again!")
                     return
                 }
+                
+                UserDefaults.standard.set(email, forKey: UserDefaultConstantKeys.email)
+                
                 let textItUser = TextItUser(firstName: firstName,
                                             lastName: lastName,
                                             emailAddress: email)
@@ -203,7 +206,8 @@ class RegisterViewController: UIViewController {
                         StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
                             switch result {
                             case .success(let downloadUrl):
-                                UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                                UserDefaults.standard.setValue(downloadUrl,
+                                                               forKey: UserDefaultConstantKeys.profilePicUrl)
                                 print("Success uploading pic: \(downloadUrl)")
                             case .failure(let error):
                                 print("Error while uploading: \(error)")
