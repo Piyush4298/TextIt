@@ -29,7 +29,7 @@ extension DatabaseManager {
         var safeEmail = email.replacingOccurrences(of: ".", with: "-")
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
         database.child(safeEmail).observeSingleEvent(of: .value, with: { snapshot in
-            guard snapshot.value as? String != nil else {
+            guard snapshot.value as? [String: String] != nil else {
                 completion(false)
                 return
             }
@@ -84,6 +84,16 @@ extension DatabaseManager {
                     })
                 }
             })
+        })
+    }
+    
+    public func fetchUsers(completion: @escaping (Result<[[String: String]], Error>) -> Void) {
+        database.child(Constants.COLLECTION_NAME_USER).observeSingleEvent(of: .value, with: { snapshot in
+            guard let users = snapshot.value as? [[String: String]] else {
+                completion(.failure(DatabaseErrors.failedToFetchUsers))
+                return
+            }
+            completion(.success(users))
         })
     }
 }

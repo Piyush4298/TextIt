@@ -48,10 +48,4 @@ final class StorageManager {
             completion(.success(url))
         })
     }
-    
-    
-    public enum StorageErrors: Error {
-        case failedToUpload
-        case failedToGetDownloadUrl
-    }
 }
