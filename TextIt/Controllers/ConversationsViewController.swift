@@ -65,8 +65,28 @@ class ConversationsViewController: UIViewController {
     
     @objc private func didTapComposeButton() {
         let newConversationsVC = NewConversationViewController()
+        newConversationsVC.userDataCompletion = { [weak self] result in
+            print("---> Result :\(result)")
+            self?.createNewChatConversation(with: result)
+        }
         let navVC = UINavigationController(rootViewController: newConversationsVC)
         present(navVC, animated: true)
+    }
+    
+    private func createNewChatConversation(with userData: [String: String]) {
+        guard let name = userData["name"],
+              let email = userData["email"] else { return  }
+        self.pushChatViewToNavigation(withTitle: name, and: email, isNewConversation: true)
+    }
+    
+    private func pushChatViewToNavigation(withTitle name: String,
+                                          and email: String,
+                                          isNewConversation: Bool = false) {
+        let chatVC = ChatViewController(with: email)
+        chatVC.title = name
+        chatVC.isNewConversation = isNewConversation
+        chatVC.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(chatVC, animated: true)
     }
 }
 
@@ -85,11 +105,7 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        let chatVC = ChatViewController()
-        chatVC.title = "Piyush"
-        chatVC.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(chatVC, animated: true)
+        self.pushChatViewToNavigation(withTitle: "Piyush", and: "abc@gmail.com")
     }
     
 }

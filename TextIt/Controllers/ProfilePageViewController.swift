@@ -32,24 +32,52 @@ class ProfilePageViewController: UIViewController {
         }
         let safeEmail = DatabaseManager.safeEmail(email)
         let imgPath = "images/" + safeEmail + Constants.profilePicExtension
-        let headerView = UIView(frame: CGRect(x: 0,
+        let headerView = UIImageView(frame: CGRect(x: 0,
                                         y: 0,
-                                        width: self.view.width,
+                                        width: self.view.width + 40,
                                         height: 300))
-        headerView.backgroundColor = .link
-        let imageView = UIImageView(frame: CGRect(x: (headerView.width - 150) / 2,
-                                                  y: 75,
-                                                  width: 150,
-                                                  height: 150))
+        headerView.contentMode = .scaleAspectFill
+        headerView.image = UIImage(named: "profile_background")
+        
+        let outerView = UIView(frame: CGRect(x: (headerView.width - 150) / 2,
+                                             y: 75,
+                                             width: 150,
+                                             height: 150))
+        outerView.clipsToBounds = false
+        outerView.layer.shadowColor = UIColor.black.cgColor
+        outerView.layer.shadowOpacity = 1
+        outerView.layer.shadowRadius = outerView.width / 2
+        outerView.layer.shadowOffset = CGSize(width: 5, height: 5)
+        
+        outerView.layer.shadowPath = UIBezierPath(roundedRect: outerView.bounds, cornerRadius: outerView.width / 2).cgPath
+        
+        let imageView = UIImageView(frame: outerView.bounds)
         imageView.backgroundColor = .white
         imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.borderWidth = 3
+        imageView.layer.borderWidth = 4
         imageView.layer.cornerRadius = imageView.width / 2
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
         setImageFor(path: imgPath, in: imageView)
-        headerView.addSubview(imageView)
+        headerView.addSubview(outerView)
+        outerView.addSubview(imageView)
+        applyMotionEffect(to: imageView, of: -20)
+        applyMotionEffect(to: headerView, of: 10)
         return headerView
+    }
+    
+    private func applyMotionEffect(to view: UIView, of magnitude: CGFloat) {
+        let xMotion = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
+        xMotion.minimumRelativeValue = -magnitude
+        xMotion.maximumRelativeValue = magnitude
+        
+        let yMotion = UIInterpolatingMotionEffect(keyPath: "center.y", type: .tiltAlongVerticalAxis)
+        yMotion.minimumRelativeValue = -magnitude
+        yMotion.maximumRelativeValue = magnitude
+        
+        let group = UIMotionEffectGroup()
+        group.motionEffects = [xMotion, yMotion]
+        view.addMotionEffect(group)
     }
     
     private func setImageFor(path: String, in imageView: UIImageView) {
