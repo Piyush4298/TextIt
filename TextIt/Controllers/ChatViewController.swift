@@ -25,25 +25,32 @@ struct Sender: SenderType {
 class ChatViewController: MessagesViewController {
     
     private let otherUserEmail: String
-    private var messgaes = [Message]()
+    private var conversationId: String?
+    private var messages = [Message]()
     private var sender: Sender? {
         guard let email = UserDefaults.standard.value(forKey: UserDefaultConstantKeys.email) as? String else {
             return nil
         }
-        return Sender(photoUrl: "", senderId: email, displayName: "Piyush")
+        let safeEmail = DatabaseManager.safeEmail(email)
+        
+        return Sender(photoUrl: "",
+                      senderId: safeEmail,
+                      displayName: "Me")
     }
     
     public var isNewConversation: Bool = false
     public static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MMM-yyyy 'at' HH:mm:ss z"
         formatter.dateStyle = .medium
         formatter.timeStyle = .long
-        formatter.locale = .current
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()
     
-    init(with email: String) {
+    init(with email: String, id: String?) {
         self.otherUserEmail = email
+        self.conversationId = id
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -65,8 +72,34 @@ class ChatViewController: MessagesViewController {
         super.viewDidAppear(animated)
         
         messageInputBar.inputTextView.becomeFirstResponder()
+        if let conversationId = conversationId {
+            listenForMessages(id: conversationId, shouldScrollToBottom: true)
+        }
     }
-
+    
+    private func listenForMessages(id: String, shouldScrollToBottom: Bool) {
+        DatabaseManager.shared.getAllMessagesForConversation(with: id, completion: { [weak self] result in
+            switch result {
+            case .success(let messages):
+                print("success in getting messages: \(messages)")
+                guard !messages.isEmpty else {
+                    print("messages are empty")
+                    return
+                }
+                self?.messages = messages
+                
+                DispatchQueue.main.async {
+                    self?.messagesCollectionView.reloadDataAndKeepOffset()
+                    
+                    if shouldScrollToBottom {
+                        self?.messagesCollectionView.scrollToLastItem()
+                    }
+                }
+            case .failure(let error):
+                print("failed to get messages: \(error)")
+            }
+        })
+    }
 }
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
@@ -76,15 +109,18 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
               let messageId = generateMessageId() else { return }
         
         if isNewConversation {
-            print("text says: \(text)")
             let message = Message(sender: sender, 
                                   messageId: messageId,
                                   sentDate: Date(),
                                   kind: .text(text))
-            DatabaseManager.shared.createNewConversation(with: otherUserEmail, firstMessage: message, completion: { [weak self] success in
+            DatabaseManager.shared.createNewConversation(with: otherUserEmail, 
+                                                         name: self.title ?? "User",
+                                                         firstMessage: message,
+                                                         completion: { [weak self] success in
                 guard let self else { return }
                 if success {
                     // Message sent
+                    print("text says: \(text)")
                 } else {
                     //
                 }
@@ -111,15 +147,14 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
             return sender
         }
         fatalError("Sender is nil, email should be cached")
-        return Sender(photoUrl: "", senderId: "1234", displayName: "Dummy Sender")
     }
     
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) -> any MessageKit.MessageType {
-        return messgaes[indexPath.section]
+        return messages[indexPath.section]
     }
     
     func numberOfSections(in messagesCollectionView: MessageKit.MessagesCollectionView) -> Int {
-        return messgaes.count
+        return messages.count
     }
     
 }

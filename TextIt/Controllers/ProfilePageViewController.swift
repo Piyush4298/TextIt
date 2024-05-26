@@ -8,6 +8,7 @@
 import FBSDKLoginKit
 import FirebaseAuth
 import GoogleSignIn
+import SDWebImage
 import UIKit
 
 class ProfilePageViewController: UIViewController {
@@ -23,6 +24,10 @@ class ProfilePageViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         tableView.tableHeaderView = createTableHeader()
     }
     
@@ -93,15 +98,9 @@ class ProfilePageViewController: UIViewController {
     }
     
     private func downloadAndSetImage(for imageView: UIImageView, with url: URL) {
-        URLSession.shared.dataTask(with: url, completionHandler: { data, _, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            DispatchQueue.main.async {
-                let image = UIImage(data: data)
-                imageView.image = image
-            }
-        }).resume()
+        DispatchQueue.main.async {
+            imageView.sd_setImage(with: url)
+        }
     }
 }
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		970F5B7D241B92520390B5CA /* Pods_TextIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */; };
+		F915DD842C031C1D008276C8 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F915DD832C031C1D008276C8 /* ConversationTableViewCell.swift */; };
 		F91AB7252BF54486003059E3 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91AB7242BF54486003059E3 /* StorageManager.swift */; };
 		F91BB52D2BDE95D4008043E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */; };
 		F9534A2C2BE783DF00FA9DB7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9534A2B2BE783DF00FA9DB7 /* DatabaseManager.swift */; };
@@ -37,6 +38,7 @@
 		0062E91C0BA29C23DC284CB6 /* Pods-TextIt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextIt.release.xcconfig"; path = "Target Support Files/Pods-TextIt/Pods-TextIt.release.xcconfig"; sourceTree = "<group>"; };
 		239C4488DBE9EBB6C104DD71 /* Pods_TextIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TextIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8F6F013EFC7021E4AED7CDD /* Pods-TextIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextIt.debug.xcconfig"; path = "Target Support Files/Pods-TextIt/Pods-TextIt.debug.xcconfig"; sourceTree = "<group>"; };
+		F915DD832C031C1D008276C8 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		F91AB7242BF54486003059E3 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F945B7752BEA7CDC00EF1F11 /* TextIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TextIt.entitlements; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				F9FDECF22BE9347000823192 /* Component */,
 				F98647472BBC7C1500864FC8 /* Main.storyboard */,
 				F986474C2BBC7C1600864FC8 /* LaunchScreen.storyboard */,
+				F915DD832C031C1D008276C8 /* ConversationTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				F99429BE2C01DEC100DC11B0 /* MessageKind+Extension.swift in Sources */,
 				F9534A2C2BE783DF00FA9DB7 /* DatabaseManager.swift in Sources */,
 				F96563B22BF889680050A9E6 /* UserDefaultConstantKeys.swift in Sources */,
+				F915DD842C031C1D008276C8 /* ConversationTableViewCell.swift in Sources */,
 				F9A7A8622BBC84B500844FE6 /* LoginViewController.swift in Sources */,
 				F96563B62BFA79C90050A9E6 /* ErrorTypes.swift in Sources */,
 				F97A4B4A2BCEDE3D00AC738D /* UIView+Extensions.swift in Sources */,

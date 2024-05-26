@@ -8,11 +8,25 @@
 import FirebaseAuth
 import UIKit
 
+struct Conversation {
+    let id: String
+    let name: String
+    let otherUserEmail: String
+    let latestMessage: LatestMessage
+}
+
+struct LatestMessage {
+    let date: String
+    let text: String
+    let isRead: Bool
+}
+
 class ConversationsViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(ConversationTableViewCell.self,
+                           forCellReuseIdentifier: ConversationTableViewCell.identifier)
         tableView.isHidden = true
         return tableView
     }()
@@ -26,6 +40,8 @@ class ConversationsViewController: UIViewController {
         label.isHidden = true
         return label
     }()
+    
+    private var conversations = [Conversation]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,22 +53,21 @@ class ConversationsViewController: UIViewController {
         view.addSubview(noConversationLabel)
         tableView.delegate = self
         tableView.dataSource = self
-        fetchConversations()
+        startListeningForConversations()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        noConversationLabel.frame = CGRect(x: 10,
+                                           y: (view.height-100)/2,
+                                           width: view.width-20,
+                                           height: 100)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         validateUser()
-        animateTableView()
-    }
-    
-    private func fetchConversations() {
-        tableView.isHidden = false
     }
     
     private func validateUser() {
@@ -62,6 +77,39 @@ class ConversationsViewController: UIViewController {
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: false)
         }
+    }
+    
+    private func startListeningForConversations() {
+        guard let email = UserDefaults.standard.value(forKey: UserDefaultConstantKeys.email) as? String else {
+            return
+        }
+        print("starting conversation fetch...")
+        
+        let safeEmail = DatabaseManager.safeEmail(email)
+        
+        DatabaseManager.shared.getAllConversations(for: safeEmail, completion: { [weak self] result in
+            switch result {
+            case .success(let conversations):
+                print("successfully got conversation models")
+                guard !conversations.isEmpty else {
+                    self?.tableView.isHidden = true
+                    self?.noConversationLabel.isHidden = false
+                    return
+                }
+                self?.noConversationLabel.isHidden = true
+                self?.tableView.isHidden = false
+                self?.conversations = conversations
+                
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                    self?.animateTableView()
+                }
+            case .failure(let error):
+                self?.tableView.isHidden = true
+                self?.noConversationLabel.isHidden = false
+                print("failed to get convos: \(error)")
+            }
+        })
     }
     
     @objc private func didTapComposeButton() {
@@ -77,13 +125,14 @@ class ConversationsViewController: UIViewController {
     private func createNewChatConversation(with userData: [String: String]) {
         guard let name = userData["name"],
               let email = userData["email"] else { return  }
-        self.pushChatViewToNavigation(withTitle: name, and: email, isNewConversation: true)
+        self.pushChatViewToNavigation(withTitle: name, mail: email, id: nil , isNewConversation: true)
     }
     
     private func pushChatViewToNavigation(withTitle name: String,
-                                          and email: String,
+                                          mail email: String,
+                                          id conversationId: String?,
                                           isNewConversation: Bool = false) {
-        let chatVC = ChatViewController(with: email)
+        let chatVC = ChatViewController(with: email, id: conversationId)
         chatVC.title = name
         chatVC.isNewConversation = isNewConversation
         chatVC.navigationItem.largeTitleDisplayMode = .never
@@ -100,7 +149,7 @@ class ConversationsViewController: UIViewController {
         }
         var delayCounter: Double = 0.0
         for cell in cells {
-            UIView.animate(withDuration: 1.75,
+            UIView.animate(withDuration: 0.75,
                            delay: delayCounter * 0.05,
                            usingSpringWithDamping: 0.8,
                            initialSpringVelocity: 0,
@@ -116,19 +165,30 @@ class ConversationsViewController: UIViewController {
 extension ConversationsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return conversations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "Dummy text"
-        cell.accessoryType = .disclosureIndicator
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: ConversationTableViewCell.identifier,
+                                                    for: indexPath) as? ConversationTableViewCell {
+            let conversationModel = conversations[indexPath.row]
+            cell.configure(with: conversationModel)
+            return cell
+        }
+        // Ideally shouldn't be called
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.pushChatViewToNavigation(withTitle: "Piyush", and: "abc@gmail.com")
+        let conversationModel = conversations[indexPath.row]
+        self.pushChatViewToNavigation(withTitle: conversationModel.name,
+                                      mail: conversationModel.otherUserEmail,
+                                      id: conversationModel.id)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120
     }
     
 }

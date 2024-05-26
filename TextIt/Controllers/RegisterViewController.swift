@@ -192,6 +192,7 @@ class RegisterViewController: UIViewController {
                 }
                 
                 UserDefaults.standard.set(email, forKey: UserDefaultConstantKeys.email)
+                UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: UserDefaultConstantKeys.fullName)
                 
                 let textItUser = TextItUser(firstName: firstName,
                                             lastName: lastName,

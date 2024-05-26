@@ -239,6 +239,7 @@ class LoginViewController: UIViewController {
                 }
                 
                 UserDefaults.standard.set(email, forKey: UserDefaultConstantKeys.email)
+                UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: UserDefaultConstantKeys.fullName)
                 
                 DatabaseManager.shared.userExists(with: email, completion: { exists in
                     if !exists {
@@ -319,6 +320,7 @@ class LoginViewController: UIViewController {
             }
             
             UserDefaults.standard.set(email, forKey: UserDefaultConstantKeys.email)
+            UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: UserDefaultConstantKeys.fullName)
             
             DatabaseManager.shared.userExists(with: email, completion: { exists in
                 if !exists {

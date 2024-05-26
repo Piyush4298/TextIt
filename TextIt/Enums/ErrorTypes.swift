@@ -15,4 +15,6 @@ public enum StorageErrors: Error {
 
 public enum DatabaseErrors: Error {
     case failedToFetchUsers
+    case failedToFetchConversations
+    case failedToFetchMessages
 }

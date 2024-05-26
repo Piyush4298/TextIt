@@ -11,4 +11,5 @@ enum Constants {
     static let profilePicExtension = "_profile_picture.png"
     static let COLLECTION_NAME_USER = "users"
     static let COLLECTION_NAME_CONVERSATIONS = "conversations"
+    static let COLLECTION_NAME_MESSAGES = "messages"
 }
