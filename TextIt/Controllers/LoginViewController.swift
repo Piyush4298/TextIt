@@ -194,6 +194,21 @@ class LoginViewController: UIViewController {
             }
             let user = result.user
             UserDefaults.standard.set(email, forKey: UserDefaultConstantKeys.email)
+            let safeEmail = DatabaseManager.safeEmail(email)
+            DatabaseManager.shared.getDataFor(path: safeEmail, completion: { result in
+                switch result {
+                case .success(let data):
+                    guard let userData = data as? [String: Any],
+                          let firstName = userData["firstName"] as? String,
+                          let lastName = userData["lastName"] as? String else {
+                        return
+                    }
+                    UserDefaults.standard.set("\(firstName) \(lastName)", forKey: UserDefaultConstantKeys.fullName)
+                    
+                case .failure(let error):
+                    print("Failed to read data with error \(error)")
+                }
+            })
             print("Logged in user: \(user.email ?? "none")")
             self.dismiss(animated: true)
         })

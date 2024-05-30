@@ -108,25 +108,47 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
               let sender = self.sender,
               let messageId = generateMessageId() else { return }
         
+        let message = Message(sender: sender,
+                              messageId: messageId,
+                              sentDate: Date(),
+                              kind: .text(text))
         if isNewConversation {
-            let message = Message(sender: sender, 
-                                  messageId: messageId,
-                                  sentDate: Date(),
-                                  kind: .text(text))
             DatabaseManager.shared.createNewConversation(with: otherUserEmail, 
                                                          name: self.title ?? "User",
                                                          firstMessage: message,
                                                          completion: { [weak self] success in
                 guard let self else { return }
                 if success {
-                    // Message sent
-                    print("text says: \(text)")
+                    // Message Sent
+                    self.isNewConversation = false
+                    let newConversationId = "conversation_\(message.messageId)"
+                    self.conversationId = newConversationId
+                    self.listenForMessages(id: newConversationId, shouldScrollToBottom: true)
+                    self.messageInputBar.inputTextView.text = nil
+                    print("message sent successfully")
                 } else {
-                    //
+                    // Failed to Send
+                    print("failed to send message")
                 }
             })
         } else {
-            
+            guard let conversationId = conversationId, let name = self.title else {
+                return
+            }
+            DatabaseManager.shared.sendMessage(to: conversationId,
+                                               otherUserEmail: otherUserEmail,
+                                               name: name,
+                                               newMessage: message,
+                                               completion: { [weak self] success in
+                guard let self else { return }
+                if success {
+                    // Message Sent
+                    self.messageInputBar.inputTextView.text = nil
+                    print("message sent successfully")
+                } else {
+                    print("failed to send message")
+                }
+            })
         }
     }
     
