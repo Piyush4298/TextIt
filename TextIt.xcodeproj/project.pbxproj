@@ -12,6 +12,7 @@
 		F91AB7252BF54486003059E3 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91AB7242BF54486003059E3 /* StorageManager.swift */; };
 		F91BB52D2BDE95D4008043E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */; };
 		F9534A2C2BE783DF00FA9DB7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9534A2B2BE783DF00FA9DB7 /* DatabaseManager.swift */; };
+		F95838952C0B173E00EDE6C3 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95838942C0B173E00EDE6C3 /* UILabel+Extensions.swift */; };
 		F96563B22BF889680050A9E6 /* UserDefaultConstantKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96563B12BF889680050A9E6 /* UserDefaultConstantKeys.swift */; };
 		F96563B42BF8AEA00050A9E6 /* UtilityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96563B32BF8AEA00050A9E6 /* UtilityConstants.swift */; };
 		F96563B62BFA79C90050A9E6 /* ErrorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96563B52BFA79C90050A9E6 /* ErrorTypes.swift */; };
@@ -27,7 +28,6 @@
 		F9A7A8642BBC84C200844FE6 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A8632BBC84C200844FE6 /* RegisterViewController.swift */; };
 		F9A7A8662BBC84D100844FE6 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A8652BBC84D100844FE6 /* NewConversationViewController.swift */; };
 		F9A7A8682BBC84E700844FE6 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A8672BBC84E700844FE6 /* PhotoViewerViewController.swift */; };
-		F9A7A86A2BBC84F600844FE6 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A8692BBC84F600844FE6 /* VideoPlayerViewController.swift */; };
 		F9A7A86C2BBC850200844FE6 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A86B2BBC850200844FE6 /* ProfilePageViewController.swift */; };
 		F9FB88C82BF29DA200A11D3D /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FB88C72BF29DA200A11D3D /* ChatViewController.swift */; };
 		F9FDECF12BE92CDE00823192 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FDECF02BE92CDE00823192 /* UIViewController+Extensions.swift */; };
@@ -43,6 +43,7 @@
 		F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F945B7752BEA7CDC00EF1F11 /* TextIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TextIt.entitlements; sourceTree = "<group>"; };
 		F9534A2B2BE783DF00FA9DB7 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		F95838942C0B173E00EDE6C3 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
 		F96563B12BF889680050A9E6 /* UserDefaultConstantKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultConstantKeys.swift; sourceTree = "<group>"; };
 		F96563B32BF8AEA00050A9E6 /* UtilityConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityConstants.swift; sourceTree = "<group>"; };
 		F96563B52BFA79C90050A9E6 /* ErrorTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTypes.swift; sourceTree = "<group>"; };
@@ -60,7 +61,6 @@
 		F9A7A8632BBC84C200844FE6 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		F9A7A8652BBC84D100844FE6 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		F9A7A8672BBC84E700844FE6 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
-		F9A7A8692BBC84F600844FE6 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		F9A7A86B2BBC850200844FE6 /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
 		F9FB88C72BF29DA200A11D3D /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		F9FDECF02BE92CDE00823192 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
@@ -104,6 +104,7 @@
 				F97A4B492BCEDE3D00AC738D /* UIView+Extensions.swift */,
 				F9FDECF02BE92CDE00823192 /* UIViewController+Extensions.swift */,
 				F99429BD2C01DEC100DC11B0 /* MessageKind+Extension.swift */,
+				F95838942C0B173E00EDE6C3 /* UILabel+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -169,7 +170,6 @@
 				F9A7A8632BBC84C200844FE6 /* RegisterViewController.swift */,
 				F9A7A8652BBC84D100844FE6 /* NewConversationViewController.swift */,
 				F9A7A8672BBC84E700844FE6 /* PhotoViewerViewController.swift */,
-				F9A7A8692BBC84F600844FE6 /* VideoPlayerViewController.swift */,
 				F9A7A86B2BBC850200844FE6 /* ProfilePageViewController.swift */,
 				F9FB88C72BF29DA200A11D3D /* ChatViewController.swift */,
 			);
@@ -333,6 +333,7 @@
 				F96563B22BF889680050A9E6 /* UserDefaultConstantKeys.swift in Sources */,
 				F915DD842C031C1D008276C8 /* ConversationTableViewCell.swift in Sources */,
 				F9A7A8622BBC84B500844FE6 /* LoginViewController.swift in Sources */,
+				F95838952C0B173E00EDE6C3 /* UILabel+Extensions.swift in Sources */,
 				F96563B62BFA79C90050A9E6 /* ErrorTypes.swift in Sources */,
 				F97A4B4A2BCEDE3D00AC738D /* UIView+Extensions.swift in Sources */,
 				F9FDECF12BE92CDE00823192 /* UIViewController+Extensions.swift in Sources */,
@@ -340,7 +341,6 @@
 				F9A7A8682BBC84E700844FE6 /* PhotoViewerViewController.swift in Sources */,
 				F9A7A86C2BBC850200844FE6 /* ProfilePageViewController.swift in Sources */,
 				F98647462BBC7C1500864FC8 /* ConversationsViewController.swift in Sources */,
-				F9A7A86A2BBC84F600844FE6 /* VideoPlayerViewController.swift in Sources */,
 				F9FB88C82BF29DA200A11D3D /* ChatViewController.swift in Sources */,
 				F9FDECF42BE934AF00823192 /* PaddingLabel.swift in Sources */,
 				F91AB7252BF54486003059E3 /* StorageManager.swift in Sources */,

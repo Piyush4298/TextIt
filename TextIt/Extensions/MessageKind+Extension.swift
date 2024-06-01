@@ -28,7 +28,7 @@ extension MessageKind {
         case .contact(_):
             return "contact"
         case .custom(_):
-            return "customc"
+            return "custom"
         case .linkPreview(_):
             return "link"
         }

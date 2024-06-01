@@ -23,7 +23,7 @@ final class DatabaseManager {
 }
 
 extension DatabaseManager {
-
+    
     /// Returns dictionary node at child path
     public func getDataFor(path: String, completion: @escaping (Result<Any, Error>) -> Void) {
         database.child("\(path)").observeSingleEvent(of: .value) { snapshot in
@@ -34,7 +34,7 @@ extension DatabaseManager {
             completion(.success(value))
         }
     }
-
+    
 }
 
 // MARK: Account Management
@@ -141,9 +141,15 @@ extension DatabaseManager {
                 message = messageText
             case .attributedText(_):
                 break
-            case .photo(_):
+            case .photo(let mediaItem):
+                if let targetUrlString = mediaItem.url?.absoluteString {
+                    message = targetUrlString
+                }
                 break
-            case .video(_):
+            case .video(let mediaItem):
+                if let targetUrlString = mediaItem.url?.absoluteString {
+                    message = targetUrlString
+                }
                 break
             case .location(_):
                 break
@@ -168,6 +174,7 @@ extension DatabaseManager {
                 "latest_message": [
                     "date": messageDate,
                     "message": message,
+                    "type": firstMessage.kind.messageKindString,
                     "is_read": false
                 ]
             ]
@@ -179,6 +186,7 @@ extension DatabaseManager {
                 "latest_message": [
                     "date": messageDate,
                     "message": message,
+                    "type": firstMessage.kind.messageKindString,
                     "is_read": false
                 ]
             ]
@@ -207,7 +215,7 @@ extension DatabaseManager {
                     completion(false)
                     return
                 }
-                self?.finishCreatingConversation(conversationId: conversationId, 
+                self?.finishCreatingConversation(conversationId: conversationId,
                                                  name: name,
                                                  firstMessage: firstMessage,
                                                  completion: completion)
@@ -226,9 +234,15 @@ extension DatabaseManager {
             message = messageText
         case .attributedText(_):
             break
-        case .photo(_):
+        case .photo(let mediaItem):
+            if let targetUrlString = mediaItem.url?.absoluteString {
+                message = targetUrlString
+            }
             break
-        case .video(_):
+        case .video(let mediaItem):
+            if let targetUrlString = mediaItem.url?.absoluteString {
+                message = targetUrlString
+            }
             break
         case .location(_):
             break
@@ -281,13 +295,15 @@ extension DatabaseManager {
                       let latestMessage = dictionary["latest_message"] as? [String: Any],
                       let date = latestMessage["date"] as? String,
                       let message = latestMessage["message"] as? String,
-                      let isRead = latestMessage["is_read"] as? Bool else {
-                    return nil
-                }
+                      let isRead = latestMessage["is_read"] as? Bool,
+                      let type = latestMessage["type"] as? String else {
+                          return nil
+                      }
                 
                 let latestMessageObject = LatestMessage(date: date,
-                                                         text: message,
-                                                         isRead: isRead)
+                                                        text: message,
+                                                        isRead: isRead,
+                                                        messageType: type)
                 return Conversation(id: conversationId,
                                     name: name,
                                     otherUserEmail: otherUserEmail,
@@ -314,19 +330,45 @@ extension DatabaseManager {
                       let senderEmail = dictionary["sender_email"] as? String,
                       let type = dictionary["type"] as? String,
                       let dateString = dictionary["date"] as? String,
-                      let date = ChatViewController.dateFormatter.date(from: dateString) else {
-                    return nil
+                      let date = ChatViewController.dateFormatter.date(from: dateString)
+                else { return nil }
+                var kind: MessageKind?
+                if type == "photo" {
+                    // photo
+                    guard let imageUrl = URL(string: content),
+                          let placeHolder = UIImage(systemName: "photo.fill") else {
+                        return nil
+                    }
+                    let media = Media(url: imageUrl,
+                                      image: nil,
+                                      placeholderImage: placeHolder,
+                                      size: CGSize(width: 300, height: 300))
+                    kind = .photo(media)
+                } else if type == "video" {
+                    // video
+                    guard let videoUrl = URL(string: content),
+                          let placeHolder = UIImage(named: "video_placeholder") 
+                    else { return nil }
+                    let media = Media(url: videoUrl,
+                                      image: nil,
+                                      placeholderImage: placeHolder,
+                                      size: CGSize(width: 300, height: 300))
+                    kind = .video(media)
+                    
+                } else {
+                    kind = .text(content)
                 }
-                var kind: MessageKind = .text(content)
+                
+                guard let finalKind = kind else { return nil }
                 
                 let sender = Sender(photoUrl: "",
                                     senderId: senderEmail,
                                     displayName: name)
-    
+                
                 return Message(sender: sender,
                                messageId: messageID,
                                sentDate: date,
-                               kind: kind)
+                               kind: finalKind)
             })
             
             completion(.success(messages))
@@ -415,7 +457,8 @@ extension DatabaseManager {
                     let updatedValue: [String: Any] = [
                         "date": dateString,
                         "is_read": false,
-                        "message": message
+                        "message": message,
+                        "type": newMessage.kind.messageKindString
                     ]
                     
                     if var currentUserConversations = snapshot.value as? [[String: Any]] {
@@ -471,7 +514,8 @@ extension DatabaseManager {
                             let updatedValue: [String: Any] = [
                                 "date": dateString,
                                 "is_read": false,
-                                "message": message
+                                "message": message,
+                                "type": newMessage.kind.messageKindString
                             ]
                             var databaseEntryConversations = [[String: Any]]()
                             

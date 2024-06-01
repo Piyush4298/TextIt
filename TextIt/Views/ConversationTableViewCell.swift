@@ -5,6 +5,7 @@
 //  Created by Piyush Pandey on 26/05/24.
 //
 
+import MessageKit
 import UIKit
 import SDWebImage
 
@@ -56,16 +57,26 @@ class ConversationTableViewCell: UITableViewCell {
         userNameLabel.frame = CGRect(x: userImageView.right + 10,
                                      y: 10,
                                      width: contentView.width - 20 - userImageView.width,
-                                     height: (contentView.height-20)/2)
+                                     height: (contentView.height - 20) / 2)
         
         userMessageLabel.frame = CGRect(x: userImageView.right + 10,
-                                        y: userNameLabel.bottom + 10,
+                                        y: userNameLabel.bottom,
                                         width: contentView.width - 20 - userImageView.width,
-                                        height: (contentView.height-20)/2)
+                                        height: (contentView.height - 20) / 2)
     }
     
     public func configure(with model: Conversation) {
-        userMessageLabel.text = model.latestMessage.text
+        if model.latestMessage.messageType == "photo" {
+            userMessageLabel.text = "Photo"
+            userMessageLabel.addLeading(image: UIImage(systemName: "photo.circle"))
+        } else if  model.latestMessage.messageType == "video" {
+            userMessageLabel.text = "Video"
+            userMessageLabel.addLeading(image: UIImage(systemName: "video.circle"))
+        } else if model.latestMessage.messageType == "location" {
+            
+        } else {
+            userMessageLabel.text = model.latestMessage.text
+        }
         userNameLabel.text = model.name
         
         let path = "images/\(model.otherUserEmail)\(Constants.profilePicExtension)"

@@ -19,6 +19,7 @@ struct LatestMessage {
     let date: String
     let text: String
     let isRead: Bool
+    let messageType: String
 }
 
 class ConversationsViewController: UIViewController {
@@ -149,7 +150,7 @@ class ConversationsViewController: UIViewController {
         }
         var delayCounter: Double = 0.0
         for cell in cells {
-            UIView.animate(withDuration: 0.75,
+            UIView.animate(withDuration: 0.5,
                            delay: delayCounter * 0.05,
                            usingSpringWithDamping: 0.8,
                            initialSpringVelocity: 0,
