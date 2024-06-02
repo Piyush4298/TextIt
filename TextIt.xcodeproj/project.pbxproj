@@ -11,6 +11,8 @@
 		F915DD842C031C1D008276C8 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F915DD832C031C1D008276C8 /* ConversationTableViewCell.swift */; };
 		F91AB7252BF54486003059E3 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91AB7242BF54486003059E3 /* StorageManager.swift */; };
 		F91BB52D2BDE95D4008043E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */; };
+		F932584B2C0CDF3B00CBC466 /* NewConversationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F932584A2C0CDF3B00CBC466 /* NewConversationsTableViewCell.swift */; };
+		F932584D2C0CF7BA00CBC466 /* Notifications+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F932584C2C0CF7BA00CBC466 /* Notifications+Extensions.swift */; };
 		F9534A2C2BE783DF00FA9DB7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9534A2B2BE783DF00FA9DB7 /* DatabaseManager.swift */; };
 		F95838952C0B173E00EDE6C3 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95838942C0B173E00EDE6C3 /* UILabel+Extensions.swift */; };
 		F96563B22BF889680050A9E6 /* UserDefaultConstantKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96563B12BF889680050A9E6 /* UserDefaultConstantKeys.swift */; };
@@ -41,6 +43,8 @@
 		F915DD832C031C1D008276C8 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		F91AB7242BF54486003059E3 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		F91BB52C2BDE95D4008043E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F932584A2C0CDF3B00CBC466 /* NewConversationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationsTableViewCell.swift; sourceTree = "<group>"; };
+		F932584C2C0CF7BA00CBC466 /* Notifications+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications+Extensions.swift"; sourceTree = "<group>"; };
 		F945B7752BEA7CDC00EF1F11 /* TextIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TextIt.entitlements; sourceTree = "<group>"; };
 		F9534A2B2BE783DF00FA9DB7 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		F95838942C0B173E00EDE6C3 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
@@ -105,6 +109,7 @@
 				F9FDECF02BE92CDE00823192 /* UIViewController+Extensions.swift */,
 				F99429BD2C01DEC100DC11B0 /* MessageKind+Extension.swift */,
 				F95838942C0B173E00EDE6C3 /* UILabel+Extensions.swift */,
+				F932584C2C0CF7BA00CBC466 /* Notifications+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -151,6 +156,7 @@
 				F98647472BBC7C1500864FC8 /* Main.storyboard */,
 				F986474C2BBC7C1600864FC8 /* LaunchScreen.storyboard */,
 				F915DD832C031C1D008276C8 /* ConversationTableViewCell.swift */,
+				F932584A2C0CDF3B00CBC466 /* NewConversationsTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -338,10 +344,12 @@
 				F97A4B4A2BCEDE3D00AC738D /* UIView+Extensions.swift in Sources */,
 				F9FDECF12BE92CDE00823192 /* UIViewController+Extensions.swift in Sources */,
 				F9A7A8642BBC84C200844FE6 /* RegisterViewController.swift in Sources */,
+				F932584B2C0CDF3B00CBC466 /* NewConversationsTableViewCell.swift in Sources */,
 				F9A7A8682BBC84E700844FE6 /* PhotoViewerViewController.swift in Sources */,
 				F9A7A86C2BBC850200844FE6 /* ProfilePageViewController.swift in Sources */,
 				F98647462BBC7C1500864FC8 /* ConversationsViewController.swift in Sources */,
 				F9FB88C82BF29DA200A11D3D /* ChatViewController.swift in Sources */,
+				F932584D2C0CF7BA00CBC466 /* Notifications+Extensions.swift in Sources */,
 				F9FDECF42BE934AF00823192 /* PaddingLabel.swift in Sources */,
 				F91AB7252BF54486003059E3 /* StorageManager.swift in Sources */,
 				F96563B42BF8AEA00050A9E6 /* UtilityConstants.swift in Sources */,

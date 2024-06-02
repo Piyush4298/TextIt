@@ -8,18 +8,24 @@
 import UIKit
 import JGProgressHUD
 
+struct SearchResult {
+    let name: String
+    let email: String
+}
+
 class NewConversationViewController: UIViewController {
     
-    public var userDataCompletion: (([String: String]) -> (Void))?
+    public var userDataCompletion: ( (SearchResult) -> (Void))?
     private let spinner = JGProgressHUD(style: .dark)
     
     private var users = [[String: String]]()
-    private var results = [[String: String]]()
+    private var results = [SearchResult]()
     private var hasFetched: Bool = false
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(NewConversationsTableViewCell.self,
+                           forCellReuseIdentifier: NewConversationsTableViewCell.identifier)
         tableView.isHidden = true
         return tableView
     }()
@@ -90,13 +96,28 @@ class NewConversationViewController: UIViewController {
     }
     
     private func filterUsers(with term: String) {
-        guard hasFetched else { return }
+        guard let currentUserEmail = UserDefaults.standard.value(forKey: UserDefaultConstantKeys.email) as? String,
+              hasFetched else { return }
+        
         spinner.dismiss()
-        let filteredUsers: [[String: String]] = self.users.filter({
+        let safeEmail = DatabaseManager.safeEmail(currentUserEmail)
+        let filteredUsers: [SearchResult] = users.filter({
+            guard let email = $0["email"], email != safeEmail else {
+                return false
+            }
+            
             guard let name = $0["name"]?.lowercased() else {
                 return false
             }
+            
             return name.contains(term.lowercased())
+        }).compactMap({
+            
+            guard let email = $0["email"],
+                  let name = $0["name"] else {
+                return nil
+            }
+            return SearchResult(name: name, email: email)
         })
         self.results = filteredUsers
         updateUI()
@@ -132,8 +153,10 @@ extension NewConversationViewController: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = results[indexPath.row]["name"]
+        let cell = tableView.dequeueReusableCell(withIdentifier: NewConversationsTableViewCell.identifier,
+                                                 for: indexPath) as! NewConversationsTableViewCell
+        let model = results[indexPath.row]
+        cell.configure(with: model)
         return cell
     }
     

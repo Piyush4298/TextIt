@@ -14,8 +14,6 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
-    private let spinner = JGProgressHUD(style: .dark)
-    
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
@@ -108,12 +106,13 @@ class LoginViewController: UIViewController {
         label.font = .systemFont(ofSize: 20)
         return label
     }()
-
+    
+    private let spinner = JGProgressHUD(style: .dark)
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Log In"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register",
                                                             style: .done,
@@ -210,6 +209,7 @@ class LoginViewController: UIViewController {
                 }
             })
             print("Logged in user: \(user.email ?? "none")")
+            NotificationCenter.default.post(name: .didLoginNotification, object: nil)
             self.dismiss(animated: true)
         })
     }
@@ -302,6 +302,7 @@ class LoginViewController: UIViewController {
                         self.showSnackBar(message: "Facebook credential login failed!")
                         return
                     }
+                    NotificationCenter.default.post(name: .didLoginNotification, object: nil)
                     self.dismiss(animated: true)
                 })
             })
@@ -384,6 +385,7 @@ class LoginViewController: UIViewController {
                     self.showSnackBar(message: "Google credential login failed!")
                     return
                 }
+                NotificationCenter.default.post(name: .didLoginNotification, object: nil)
                 self.dismiss(animated: true)
             })
             

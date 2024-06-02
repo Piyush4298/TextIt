@@ -43,6 +43,7 @@ class ConversationsViewController: UIViewController {
     }()
     
     private var conversations = [Conversation]()
+    private var loginObserver: NSObjectProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +56,14 @@ class ConversationsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         startListeningForConversations()
+        loginObserver = NotificationCenter.default.addObserver(forName: .didLoginNotification,
+                                                               object: nil,
+                                                               queue: .main,
+                                                               using: { [weak self] _ in
+            guard let self else { return }
+            self.tabBarController?.selectedIndex = 0
+            self.startListeningForConversations()
+        })
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,6 +96,9 @@ class ConversationsViewController: UIViewController {
         print("starting conversation fetch...")
         
         let safeEmail = DatabaseManager.safeEmail(email)
+        if let observer = loginObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
         
         DatabaseManager.shared.getAllConversations(for: safeEmail, completion: { [weak self] result in
             switch result {
@@ -123,9 +135,9 @@ class ConversationsViewController: UIViewController {
         present(navVC, animated: true)
     }
     
-    private func createNewChatConversation(with userData: [String: String]) {
-        guard let name = userData["name"],
-              let email = userData["email"] else { return  }
+    private func createNewChatConversation(with userData: SearchResult) {
+        let name = userData.name
+        let email = userData.email
         self.pushChatViewToNavigation(withTitle: name, mail: email, id: nil , isNewConversation: true)
     }
     
@@ -190,6 +202,25 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let conversationId = conversations[indexPath.row].id
+            tableView.beginUpdates()
+            self.conversations.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
+            DatabaseManager.shared.deleteConversation(conversationId: conversationId, completion: { success in
+                if !success {
+                    
+                }
+            })
+            tableView.endUpdates()
+        }
     }
     
 }

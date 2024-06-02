@@ -60,7 +60,7 @@
         <scene sceneID="7z9-zM-GzG">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tvI-zt-D5x" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chats" id="DRg-Oc-G8Q"/>
+                    <tabBarItem key="tabBarItem" title="Chats" image="ellipsis.message.fill" catalog="system" id="DRg-Oc-G8Q"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="VV7-pF-8Sa">
                         <rect key="frame" x="0.0" y="59" width="393" height="96"/>
@@ -79,7 +79,7 @@
         <scene sceneID="alI-zj-NEK">
             <objects>
                 <navigationController id="Xbp-W1-Vgl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="Aa6-bI-Pad"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="person.crop.circle.fill" catalog="system" id="Aa6-bI-Pad"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="Z4R-s5-bQt">
                         <rect key="frame" x="0.0" y="59" width="393" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -98,6 +98,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="msb-Hr-O5K" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Cas-Et-lfG">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
@@ -112,6 +113,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ellipsis.message.fill" catalog="system" width="128" height="114"/>
+        <image name="person.crop.circle.fill" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -216,6 +216,7 @@ class RegisterViewController: UIViewController {
                         })
                     }
                 })
+                NotificationCenter.default.post(name: .didLoginNotification, object: nil)
                 self.dismiss(animated: true)
             })
         })

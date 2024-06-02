@@ -297,8 +297,8 @@ extension DatabaseManager {
                       let message = latestMessage["message"] as? String,
                       let isRead = latestMessage["is_read"] as? Bool,
                       let type = latestMessage["type"] as? String else {
-                          return nil
-                      }
+                    return nil
+                }
                 
                 let latestMessageObject = LatestMessage(date: date,
                                                         text: message,
@@ -347,7 +347,7 @@ extension DatabaseManager {
                 } else if type == "video" {
                     // video
                     guard let videoUrl = URL(string: content),
-                          let placeHolder = UIImage(named: "video_placeholder") 
+                          let placeHolder = UIImage(named: "video_placeholder")
                     else { return nil }
                     let media = Media(url: videoUrl,
                                       image: nil,
@@ -578,6 +578,38 @@ extension DatabaseManager {
                 })
             }
         })
+    }
+    
+    /// Deletes a conversation with target conversation id.
+    public func deleteConversation(conversationId: String, completion: @escaping (Bool) -> Void) {
+        guard let email = UserDefaults.standard.value(forKey: UserDefaultConstantKeys.email) as? String else { return }
+        let safeEmail = DatabaseManager.safeEmail(email)
+        
+        let ref = database.child("\(safeEmail)/\(Constants.COLLECTION_NAME_CONVERSATIONS)")
+        ref.observeSingleEvent(of: .value) { snapshot in
+            if var conversations = snapshot.value as? [[String: Any]] {
+                var positionToRemove = 0
+                for conversation in conversations {
+                    if let id = conversation["id"] as? String,
+                       id == conversationId {
+                        print("Conversation found")
+                        break
+                    }
+                    positionToRemove += 1
+                }
+                
+                conversations.remove(at: positionToRemove)
+                ref.setValue(conversations, withCompletionBlock: { error, _  in
+                    guard error == nil else {
+                        completion(false)
+                        print("Failed to write a new conversation array")
+                        return
+                    }
+                    print("Deleted conversation")
+                    completion(true)
+                })
+            }
+        }
     }
 }
 
