@@ -128,8 +128,20 @@ class ConversationsViewController: UIViewController {
     @objc private func didTapComposeButton() {
         let newConversationsVC = NewConversationViewController()
         newConversationsVC.userDataCompletion = { [weak self] result in
-            print("---> Result :\(result)")
-            self?.createNewChatConversation(with: result)
+            guard let self else { return }
+            
+            let currentConversations = self.conversations
+            
+            if let targetConversation = currentConversations.first(where: {
+                $0.otherUserEmail == DatabaseManager.safeEmail(result.email)
+            }) {
+                self.pushChatViewToNavigation(withTitle: targetConversation.name,
+                                              mail: targetConversation.otherUserEmail,
+                                              id: targetConversation.id)
+            }
+            else {
+                self.createNewChatConversation(with: result)
+            }
         }
         let navVC = UINavigationController(rootViewController: newConversationsVC)
         present(navVC, animated: true)
@@ -137,7 +149,22 @@ class ConversationsViewController: UIViewController {
     
     private func createNewChatConversation(with userData: SearchResult) {
         let name = userData.name
-        let email = userData.email
+        let email = DatabaseManager.safeEmail(userData.email)
+
+        DatabaseManager.shared.conversationExists(with: email, completion: { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let conversationId):
+                self.pushChatViewToNavigation(withTitle: name,
+                                              mail: email,
+                                              id: conversationId)
+            case .failure(_):
+                self.pushChatViewToNavigation(withTitle: name,
+                                              mail: email,
+                                              id: nil ,
+                                              isNewConversation: true)
+            }
+        })
         self.pushChatViewToNavigation(withTitle: name, mail: email, id: nil , isNewConversation: true)
     }
     

@@ -611,6 +611,38 @@ extension DatabaseManager {
             }
         }
     }
+    
+    public func conversationExists(with targetRecipientEmail: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let safeRecipientEmail = DatabaseManager.safeEmail(targetRecipientEmail)
+        guard let senderEmail = UserDefaults.standard.value(forKey: UserDefaultConstantKeys.email) as? String else { return }
+        let safeSenderEmail = DatabaseManager.safeEmail(senderEmail)
+        
+        database.child("\(safeRecipientEmail)/\(Constants.COLLECTION_NAME_CONVERSATIONS)").observeSingleEvent(of: .value, with: { snapshot in
+            guard let collection = snapshot.value as? [[String: Any]] else {
+                completion(.failure(DatabaseErrors.failedToFetchUsers))
+                return
+            }
+            
+            // iterate and find conversation with target sender
+            if let conversation = collection.first(where: {
+                guard let targetSenderEmail = $0["other_user_email"] as? String else {
+                    return false
+                }
+                return safeSenderEmail == targetSenderEmail
+            }) {
+                guard let id = conversation["id"] as? String else {
+                    completion(.failure(DatabaseErrors.failedToFetchConversations))
+                    return
+                }
+                completion(.success(id))
+                return
+            }
+            
+            completion(.failure(DatabaseErrors.failedToFetchUsers))
+            return
+        })
+    }
+
 }
 
 

@@ -41,14 +41,14 @@ class NewConversationViewController: UIViewController {
         label.isHidden = true
         label.text = "No Users found..."
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .secondarySystemBackground
         label.font = .systemFont(ofSize: 25, weight: .medium)
         return label
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .systemBackground
         // Do any additional setup after loading the view.
         view.addSubview(noResultsLabel)
         view.addSubview(tableView)
