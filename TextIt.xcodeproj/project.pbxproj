@@ -26,6 +26,7 @@
 		F986474B2BBC7C1600864FC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F986474A2BBC7C1600864FC8 /* Assets.xcassets */; };
 		F986474E2BBC7C1600864FC8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F986474D2BBC7C1600864FC8 /* Base */; };
 		F99429BE2C01DEC100DC11B0 /* MessageKind+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99429BD2C01DEC100DC11B0 /* MessageKind+Extension.swift */; };
+		F99A0A6E2C0FC8990039B62E /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99A0A6D2C0FC8990039B62E /* LocationPickerViewController.swift */; };
 		F9A7A8622BBC84B500844FE6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A8612BBC84B500844FE6 /* LoginViewController.swift */; };
 		F9A7A8642BBC84C200844FE6 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A8632BBC84C200844FE6 /* RegisterViewController.swift */; };
 		F9A7A8662BBC84D100844FE6 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7A8652BBC84D100844FE6 /* NewConversationViewController.swift */; };
@@ -61,6 +62,7 @@
 		F986474D2BBC7C1600864FC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F986474F2BBC7C1600864FC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F99429BD2C01DEC100DC11B0 /* MessageKind+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageKind+Extension.swift"; sourceTree = "<group>"; };
+		F99A0A6D2C0FC8990039B62E /* LocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
 		F9A7A8612BBC84B500844FE6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F9A7A8632BBC84C200844FE6 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		F9A7A8652BBC84D100844FE6 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				F9A7A8672BBC84E700844FE6 /* PhotoViewerViewController.swift */,
 				F9A7A86B2BBC850200844FE6 /* ProfilePageViewController.swift */,
 				F9FB88C72BF29DA200A11D3D /* ChatViewController.swift */,
+				F99A0A6D2C0FC8990039B62E /* LocationPickerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				F97A4B4A2BCEDE3D00AC738D /* UIView+Extensions.swift in Sources */,
 				F9FDECF12BE92CDE00823192 /* UIViewController+Extensions.swift in Sources */,
 				F9A7A8642BBC84C200844FE6 /* RegisterViewController.swift in Sources */,
+				F99A0A6E2C0FC8990039B62E /* LocationPickerViewController.swift in Sources */,
 				F932584B2C0CDF3B00CBC466 /* NewConversationsTableViewCell.swift in Sources */,
 				F9A7A8682BBC84E700844FE6 /* PhotoViewerViewController.swift in Sources */,
 				F9A7A86C2BBC850200844FE6 /* ProfilePageViewController.swift in Sources */,

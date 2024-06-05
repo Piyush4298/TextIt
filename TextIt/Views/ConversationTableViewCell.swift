@@ -73,7 +73,8 @@ class ConversationTableViewCell: UITableViewCell {
             userMessageLabel.text = "Video"
             userMessageLabel.addLeading(image: UIImage(systemName: "video.circle"))
         } else if model.latestMessage.messageType == "location" {
-            
+            userMessageLabel.text = "Location"
+            userMessageLabel.addLeading(image: UIImage(systemName: "location.north.circle"))
         } else {
             userMessageLabel.text = model.latestMessage.text
         }

@@ -6,6 +6,7 @@
 //
 
 import AVKit
+import CoreLocation
 import InputBarAccessoryView
 import JGProgressHUD
 import MessageKit
@@ -29,6 +30,11 @@ struct Media: MediaItem {
     var url: URL?
     var image: UIImage?
     var placeholderImage: UIImage
+    var size: CGSize
+}
+
+struct Location: LocationItem {
+    var location: CLLocation
     var size: CGSize
 }
 
@@ -117,15 +123,55 @@ class ChatViewController: MessagesViewController {
         actionSheet.addAction(UIAlertAction(title: "Video", style: .default, handler: { [weak self]  _ in
             self?.presentVideoInputActionsheet()
         }))
-        actionSheet.addAction(UIAlertAction(title: "Audio", style: .default, handler: {  _ in
-            
-        }))
         actionSheet.addAction(UIAlertAction(title: "Location", style: .default, handler: { [weak self]  _ in
-            //self?.presentLocationPicker()
+            self?.presentLocationPicker()
         }))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(actionSheet, animated: true)
+    }
+    
+    private func presentLocationPicker() {
+        let vc = LocationPickerViewController(coordinates: nil)
+        vc.title = "Pick Location"
+        vc.navigationItem.largeTitleDisplayMode = .never
+        vc.completion = { [weak self] selectedCoorindates in
+            guard let self else { return }
+            
+            guard let messageId = self.generateMessageId(),
+                  let conversationId = self.conversationId,
+                  let name = self.title,
+                  let selfSender = self.sender else {
+                return
+            }
+            
+            let longitude: Double = selectedCoorindates.longitude
+            let latitude: Double = selectedCoorindates.latitude
+            
+            print("long=\(longitude) | lat= \(latitude)")
+            
+            let location = Location(location: CLLocation(latitude: latitude, longitude: longitude),
+                                    size: .zero)
+            
+            let message = Message(sender: selfSender,
+                                  messageId: messageId,
+                                  sentDate: Date(),
+                                  kind: .location(location))
+            
+            DatabaseManager.shared.sendMessage(to: conversationId,
+                                               otherUserEmail: self.otherUserEmail,
+                                               name: name,
+                                               newMessage: message,
+                                               completion: { success in
+                if success {
+                    print("sent location message")
+                }
+                else {
+                    print("failed to send location message")
+                }
+            })
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     private func presentPhotoInputActionsheet() {
@@ -312,6 +358,22 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
 }
 
 extension ChatViewController: MessageCellDelegate {
+    func didTapMessage(in cell: MessageCollectionViewCell) {
+        guard let indexPath = messagesCollectionView.indexPath(for: cell) else { return }
+        
+        let message = messages[indexPath.section]
+        switch message.kind {
+        case .location(let locationData):
+            let coordinates = locationData.location.coordinate
+            let vc = LocationPickerViewController(coordinates: coordinates)
+            
+            vc.title = "Location"
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
+        }
+    }
+
     func didTapImage(in cell: MessageCollectionViewCell) {
         guard let indexPath = messagesCollectionView.indexPath(for: cell) else { return }
         let message = messages[indexPath.section]
@@ -323,7 +385,7 @@ extension ChatViewController: MessageCellDelegate {
             self.navigationController?.pushViewController(photoVC, animated: true)
         case .video(let media):
             guard let videoUrl = media.url else { return }
-
+            
             let vc = AVPlayerViewController()
             vc.player = AVPlayer(url: videoUrl)
             present(vc, animated: true, completion: {
@@ -374,7 +436,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                                           sentDate: Date(),
                                           kind: .photo(media))
                     
-                    DatabaseManager.shared.sendMessage(to: conversationId, 
+                    DatabaseManager.shared.sendMessage(to: conversationId,
                                                        otherUserEmail: self.otherUserEmail,
                                                        name: name,
                                                        newMessage: message,
