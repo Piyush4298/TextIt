@@ -144,7 +144,6 @@
 				F9A7A8602BBC7FB400844FE6 /* Resources */,
 				F9A7A85F2BBC7FA800844FE6 /* Models */,
 				F9A7A85E2BBC7F9D00844FE6 /* Controllers */,
-				F9A7A85D2BBC7F9100844FE6 /* ViewModels */,
 				F9A7A85C2BBC7F8B00844FE6 /* Views */,
 				F986474F2BBC7C1600864FC8 /* Info.plist */,
 			);
@@ -161,13 +160,6 @@
 				F932584A2C0CDF3B00CBC466 /* NewConversationsTableViewCell.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		F9A7A85D2BBC7F9100844FE6 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		F9A7A85E2BBC7F9D00844FE6 /* Controllers */ = {

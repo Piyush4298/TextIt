@@ -66,29 +66,42 @@ class ConversationTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: Conversation) {
+        
+        var icon: UIImage?
         if model.latestMessage.messageType == "photo" {
             userMessageLabel.text = "Photo"
-            userMessageLabel.addLeading(image: UIImage(systemName: "photo.circle"))
+            icon = UIImage(systemName: "photo.circle")?.withRenderingMode(.alwaysTemplate)
+            icon = icon?.withTintColor(UIColor { traits in
+                return traits.userInterfaceStyle == .dark ? .white : .black
+            })
+            userMessageLabel.addLeading(image: icon)
         } else if  model.latestMessage.messageType == "video" {
             userMessageLabel.text = "Video"
-            userMessageLabel.addLeading(image: UIImage(systemName: "video.circle"))
+            icon = UIImage(systemName: "video.circle")?.withRenderingMode(.alwaysTemplate)
+            icon = icon?.withTintColor(UIColor { traits in
+                return traits.userInterfaceStyle == .dark ? .white : .black
+            })
+            userMessageLabel.addLeading(image: icon)
         } else if model.latestMessage.messageType == "location" {
             userMessageLabel.text = "Location"
-            userMessageLabel.addLeading(image: UIImage(systemName: "location.north.circle"))
+            icon = UIImage(systemName: "location.north.circle")?.withRenderingMode(.alwaysTemplate)
+            icon = icon?.withTintColor(UIColor { traits in
+                return traits.userInterfaceStyle == .dark ? .white : .link
+            })
+            userMessageLabel.addLeading(image: icon)
         } else {
             userMessageLabel.text = model.latestMessage.text
         }
+        
         userNameLabel.text = model.name
         
         let path = "images/\(model.otherUserEmail)\(Constants.profilePicExtension)"
         StorageManager.shared.downloadURL(for: path, completion: { [weak self] result in
             switch result {
             case .success(let url):
-                
                 DispatchQueue.main.async {
                     self?.userImageView.sd_setImage(with: url, completed: nil)
                 }
-                
             case .failure(let error):
                 print("failed to get image url: \(error)")
             }

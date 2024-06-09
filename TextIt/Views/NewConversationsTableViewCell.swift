@@ -15,7 +15,7 @@ class NewConversationsTableViewCell: UITableViewCell {
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 25
+        imageView.layer.cornerRadius = 20
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -40,9 +40,9 @@ class NewConversationsTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         userImageView.frame = CGRect(x: 10,
-                                     y: 0,
-                                     width: 50,
-                                     height: 50)
+                                     y: 5,
+                                     width: 40,
+                                     height: 40)
         
         userNameLabel.frame = CGRect(x: userImageView.right + 10,
                                      y: 0,

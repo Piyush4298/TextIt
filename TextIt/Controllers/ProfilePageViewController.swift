@@ -22,61 +22,39 @@ struct ProfileViewModel {
 }
 
 class ProfilePageViewController: UIViewController {
-
+    
     @IBOutlet weak var tableView: UITableView!
     
     var data = [ProfileViewModel]()
+    private var loginNotification: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         tableView.register(ProfileTableViewCell.self,
                            forCellReuseIdentifier: ProfileTableViewCell.identifier)
-        data.append(ProfileViewModel(viewModelType: .info,
-                                     title: "Name: \(UserDefaults.standard.value(forKey:"name") as? String ?? "No Name")",
-                                     handler: nil))
-        data.append(ProfileViewModel(viewModelType: .info,
-                                     title: "Email: \(UserDefaults.standard.value(forKey:"email") as? String ?? "No Email")",
-                                     handler: nil))
-        data.append(ProfileViewModel(viewModelType: .logout,
-                                     title: "Log Out",
-                                    handler: { [weak self] in
-            guard let self else { return }
-            let actionSheet = UIAlertController(title: "Do you really want to Logout",
-                                                message: "Select an option to proceed",
-                                                preferredStyle: .actionSheet)
-            
-            actionSheet.addAction(UIAlertAction(title: "Log Out",
-                                                style: .default,
-                                                handler: { [weak self] _ in
-                guard let self else { return }
-                // Faceook logout
-                FBSDKLoginKit.LoginManager().logOut()
-                
-                // Google logout
-                GIDSignIn.sharedInstance.signOut()
-                
-                do {
-                    try FirebaseAuth.Auth.auth().signOut()
-                    
-                    let loginVC = LoginViewController()
-                    let navVC = UINavigationController(rootViewController: loginVC)
-                    navVC.modalPresentationStyle = .fullScreen
-                    present(navVC, animated: true)
-                } catch {
-                    self.showSnackBar(message: "Failed to Logout!")
-                }
-            }))
-            
-            actionSheet.addAction(UIAlertAction(title: "Cancel",
-                                                style: .cancel,
-                                                handler: nil))
-            present(actionSheet, animated: true)
-        }))
-        
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loginNotification = NotificationCenter.default.addObserver(forName: .didLoginNotification,
+                                                                   object: nil,
+                                                                   queue: .main,
+                                                                   using: { [weak self] _ in
+            self?.tabBarController?.selectedIndex = 0
+        })
+        data = generateDataSource()
+        tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let loginNotification {
+            NotificationCenter.default.removeObserver(loginNotification)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -89,11 +67,11 @@ class ProfilePageViewController: UIViewController {
             return nil
         }
         let safeEmail = DatabaseManager.safeEmail(email)
-        let imgPath = "images/" + safeEmail + Constants.profilePicExtension
+        let imgPath = "images/\(safeEmail)\(Constants.profilePicExtension)"
         let headerView = UIImageView(frame: CGRect(x: 0,
-                                        y: 0,
-                                        width: self.view.width + 40,
-                                        height: 300))
+                                                   y: 0,
+                                                   width: self.view.width + 40,
+                                                   height: 300))
         headerView.contentMode = .scaleAspectFill
         headerView.image = UIImage(named: "profile_background")
         
@@ -124,6 +102,55 @@ class ProfilePageViewController: UIViewController {
         return headerView
     }
     
+    private func generateDataSource() -> [ProfileViewModel] {
+        var profiles = [ProfileViewModel]()
+        profiles.removeAll()
+        profiles.append(ProfileViewModel(viewModelType: .info,
+                                         title: "Name: \(UserDefaults.standard.value(forKey: UserDefaultConstantKeys.fullName) as? String ?? "No Name")",
+                                         handler: nil))
+        profiles.append(ProfileViewModel(viewModelType: .info,
+                                         title: "Email: \(UserDefaults.standard.value(forKey: UserDefaultConstantKeys.email) as? String ?? "No Email")",
+                                         handler: nil))
+        profiles.append(ProfileViewModel(viewModelType: .logout,
+                                         title: "Log Out",
+                                         handler: { [weak self] in
+            guard let self else { return }
+            let actionSheet = UIAlertController(title: "Do you really want to Logout",
+                                                message: "Select an option to proceed",
+                                                preferredStyle: .actionSheet)
+            
+            actionSheet.addAction(UIAlertAction(title: "Log Out",
+                                                style: .destructive,
+                                                handler: { [weak self] _ in
+                guard let self else { return }
+                UserDefaults.standard.removeObject(forKey: UserDefaultConstantKeys.email)
+                UserDefaults.standard.removeObject(forKey: UserDefaultConstantKeys.fullName)
+                // Faceook logout
+                FBSDKLoginKit.LoginManager().logOut()
+                
+                // Google logout
+                GIDSignIn.sharedInstance.signOut()
+                
+                do {
+                    try FirebaseAuth.Auth.auth().signOut()
+                    
+                    let loginVC = LoginViewController()
+                    let navVC = UINavigationController(rootViewController: loginVC)
+                    navVC.modalPresentationStyle = .fullScreen
+                    present(navVC, animated: true)
+                } catch {
+                    self.showSnackBar(message: "Failed to Logout!")
+                }
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                                style: .cancel,
+                                                handler: nil))
+            present(actionSheet, animated: true)
+        }))
+        return profiles
+    }
+    
     private func applyMotionEffect(to view: UIView, of magnitude: CGFloat) {
         let xMotion = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
         xMotion.minimumRelativeValue = -magnitude
@@ -142,14 +169,15 @@ class ProfilePageViewController: UIViewController {
         StorageManager.shared.downloadURL(for: path, completion: { [weak self] result in
             switch result {
             case .success(let url):
-                imageView.sd_setImage(with: url)
+                DispatchQueue.main.async {
+                    imageView.sd_setImage(with: url)
+                }
             case .failure(_):
                 self?.showSnackBar(message: "Could not find image for user")
                 print("Failed to get download URL")
             }
         })
     }
-  
 }
 
 extension ProfilePageViewController: UITableViewDelegate, UITableViewDataSource {
@@ -181,11 +209,15 @@ class ProfileTableViewCell: UITableViewCell {
         self.textLabel?.text = viewModel.title
         switch viewModel.viewModelType {
         case .info:
+            textLabel?.textColor = UIColor(dynamicProvider: { traits in
+                return traits.userInterfaceStyle == .dark ? .white : .black
+            })
             textLabel?.textAlignment = .left
             selectionStyle = .none
         case .logout:
             textLabel?.textColor = .red
             textLabel?.textAlignment = .center
+            selectionStyle = .default
         }
     }
     

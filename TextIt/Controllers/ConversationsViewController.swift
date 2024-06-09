@@ -56,6 +56,10 @@ class ConversationsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         startListeningForConversations()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loginObserver = NotificationCenter.default.addObserver(forName: .didLoginNotification,
                                                                object: nil,
                                                                queue: .main,
